@@ -9,4 +9,8 @@
         <item name="colorControlNormal">@color/colorText</item>
         <item name="colorControlActivated">@color/colorText</item>
     </style>
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.DayNight">
+
+    </style>
 </resources>
