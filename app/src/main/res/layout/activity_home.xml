@@ -8,9 +8,30 @@
 
     <TextView
         android:id="@+id/txtHomeTitle"
+        android:layout_width="298dp"
+        android:layout_height="85dp"
+        android:gravity="center"
+        android:text="HOME ACTIVITY"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.096" />
+
+    <Button
+        android:id="@+id/btnCerrarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HOME ACTIVITY"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="125dp" />
+        android:text="Cerrar Sesión"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="288dp" />
+
+    <Button
+        android:id="@+id/btnAjustes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ajustes"
+        tools:layout_editor_absoluteX="163dp"
+        tools:layout_editor_absoluteY="420dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
