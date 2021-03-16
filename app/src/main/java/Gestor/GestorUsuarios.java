@@ -24,12 +24,12 @@ public class GestorUsuarios {
         SQLiteDatabase db = gestor.getWritableDatabase();
         if (db != null){
             resultado = 1; // Accedido a la BD pero ya existe el usuario
-            String consultaCountUsuario = "SELECT COUNT(*) FROM usuarios WHERE Email == " + email + ";";
+            String consultaCountUsuario = "SELECT COUNT(*) FROM usuarios WHERE Email = \'" + email + "\'";
             Cursor cs = gestor.ejecutarConsulta(db, consultaCountUsuario);
             cs.moveToNext();
-            if (cs.getInt(0) != 0) {
+            if (cs.getInt(0) == 0) {
                 resultado = 2; // Nuevo usuario añadido a la BD
-                String update = "INSERT INTO usuario (Email, Contrasena) VALUES (" + email + "," + contrasena + ");";
+                String update = "INSERT INTO usuarios(Email, Contrasena) VALUES(\'" + email + "\',\'" + contrasena + "\');";
                 gestor.ejecutarUpdate(db, update);
             }
         }
@@ -43,11 +43,11 @@ public class GestorUsuarios {
         SQLiteDatabase db = gestor.getWritableDatabase();
         if (db != null){
             resultado = 1; // Accedido a la base de datos pero credenciales incorrectas
-            String consultaCountUsuario = "SELECT COUNT (*) FROM usuarios WHERE 'Email' =? " + email;
+            String consultaCountUsuario = "SELECT COUNT(*) FROM usuarios WHERE Email = \'" + email + "\'";
             Cursor cs = gestor.ejecutarConsulta(db, consultaCountUsuario);
             cs.moveToNext();
             if (cs.getInt(0) != 0) {
-                String consultaGetContrasena = "SELECT Contrasena FROM usuarios WHERE 'Email' =? " + email;
+                String consultaGetContrasena = "SELECT Contrasena FROM usuarios WHERE Email = \'" + email + "\'";
                 Cursor cs2 = gestor.ejecutarConsulta(db, consultaGetContrasena);
                 cs2.moveToNext();
                 String contrasenaActual = cs2.getString(0);
