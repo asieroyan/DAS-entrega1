@@ -14,8 +14,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
-        btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
+        Button btnVolverLogin = findViewById(R.id.btnVolverLogin);
+        btnVolverLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);

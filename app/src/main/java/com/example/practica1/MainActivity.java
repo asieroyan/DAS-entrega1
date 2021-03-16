@@ -1,5 +1,7 @@
 package com.example.practica1;
 
+import Gestor.GestorUsuarios;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,12 +32,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TextView textEmail = findViewById(R.id.editTextEmail);
-                String email = (String) textEmail.getText();
+                String email = "" + textEmail.getText();
 
                 TextView textContrasena = findViewById(R.id.editTextContraseña);
-                String contrasena = (String) textContrasena.getText();
+                String contrasena = "" + textContrasena.getText();
 
-
+                int codigo = GestorUsuarios.getGestorUsuarios().login(MainActivity.this, email, contrasena);
+                if (codigo == 0) {
+                    Toast.makeText(MainActivity.this, "Error al conectarse a la BD", Toast.LENGTH_SHORT).show();
+                } else if (codigo == 1) {
+                    Toast.makeText(MainActivity.this, "Error en las credenciales", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Inicio de sesión correcto", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

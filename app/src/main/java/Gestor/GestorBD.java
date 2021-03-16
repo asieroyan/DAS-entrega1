@@ -1,58 +1,43 @@
 package Gestor;
 
 // Imports para la gestión de la BD
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
 
 // Esta clase realiza todas las acciones necesarias para el control de la BD sin tener que hacer una
 // llamada desde fuera de ella. Las conexiones abiertas se cierran al acabar de realizar una
 // acción para no saturar la BD.
-public class GestorBD {
+public class GestorBD extends SQLiteOpenHelper {
 
     // Atributos para la conexión con la BD
-    private String servidorBD;
-    private String puertoBD;
-    private String usuarioBD;
-    private String contrasenaBD;
-    private String nombreBD;
+    private String sqlCreate = "CREATE TABLE usuarios ('Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'Email' VARCHAR(255), 'Contrasena' VARCHAR(255))";
 
-    // Atributo singleton
-    private static GestorBD mGestorBD = null;
-
-    // Constructora privada
-    private GestorBD(){}
-
-    // Método público y estático para ser llamado desde fuera de la clase. Devuelve la instancia
-    // de GestorBD
-    public static GestorBD getmGestorBD(){
-        if (mGestorBD == null){
-            mGestorBD = new GestorBD();
-        }
-        return mGestorBD;
+    // Constructora pública
+    GestorBD(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
+        super(context, name, factory, version);
     }
 
-    //Conexión con la BD
-    private Connection conn() throws SQLException{
-        return DriverManager.getConnection(servidorBD + ':' +  puertoBD + '/' + nombreBD, usuarioBD, contrasenaBD);
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(sqlCreate);
     }
 
-    //Ejecutar una consulta en la BD y devolver el ResultSet
-    public ResultSet ejecutarConsulta(String consulta) throws SQLException{
-        Connection conn = conn();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(consulta);
-        conn.close();
-        return rs;
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS Usuarios");
     }
 
-    //Ejecutar un update en la BD
-    public void ejecutarUpdate (String update) throws SQLException{
-        Connection conn = conn();
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate(update);
-        conn.close();
+    public void ejecutarUpdate(SQLiteDatabase db, String query) {
+        db.execSQL(query);
+        db.execSQL(sqlCreate);
+    }
+
+    public Cursor ejecutarConsulta(SQLiteDatabase db, String query) {
+        return db.rawQuery(query, null);
     }
 }
