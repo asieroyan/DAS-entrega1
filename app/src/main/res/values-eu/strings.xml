@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Praktika 1</string>
+    <string name="titulo">Hasi saioa zure emailarekin eta pasahitzarekin</string>
+    <string name="editTextEmail">Sartu zure emaila</string>
+    <string name="editTextContrasena">Sartu zure pasahitza</string>
+    <string name="btnIniciarSesion">HASI SAIOA</string>
+    <string name="textSinCuenta">Ez duzu akonturik) Klik hemen</string>
+    <string name="textTituloRegistro">Sartu zure datuak izena emateko</string>
+    <string name="editTextRepetirContrasena">Pasahitza errepikatu</string>
+    <string name="btnRegistrarse">IZENA EMAN</string>
+    <string name="btnVolverLogin">LOGINERA BUELTATU</string>
+    <string name="toastFormatoEmail">Emailaren formatua es da zuzena</string>
+    <string name="toastContrasenasCoinciden">Pasahitza desberdinak</string>
+    <string name="toastUsuarioExiste">"Erabiltzailea hartuta dago "</string>
+    <string name="toastErrorCredenciales">Email edo pasahitza okerrak</string>
+    <string name="toastErrorBD">Errorea DBarekin</string>
+    <string name="btnCerrarSesion">SAIOA ITXI</string>
+    <string name="textConfirmarCerrar">Ziur zaude irten nahi zarela?</string>
+    <string name="textSi">Bai</string>
+    <string name="textNo">Ez</string>
+    <string name="toastCaracteresContrasena">"Pasahitza 8 karakter izan behar ditu gutxienez "</string>
+</resources>

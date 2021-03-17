@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Practice 1</string>
+    <string name="titulo">Log in with your email and password</string>
+    <string name="editTextEmail">Enter your email</string>
+    <string name="editTextContrasena">Enter your password</string>
+    <string name="btnIniciarSesion">LOG IN</string>
+    <string name="textSinCuenta">Don´t have an account? Click here</string>
+    <string name="textTituloRegistro">Enter your data for register</string>
+    <string name="editTextRepetirContrasena">Repeat the password</string>
+    <string name="btnRegistrarse">REGISTER</string>
+    <string name="btnVolverLogin">RETURN TO LOGIN</string>
+    <string name="toastFormatoEmail">Email format is not valid</string>
+    <string name="toastContrasenasCoinciden">Passwords do not match</string>
+    <string name="toastUsuarioExiste">User already exists</string>
+    <string name="toastErrorCredenciales">Incorrect email or password</string>
+    <string name="toastErrorBD">Error in DB connection</string>
+    <string name="btnCerrarSesion">LOG OUT</string>
+    <string name="textConfirmarCerrar">Are you sure you want to exit?</string>
+    <string name="textSi">Yes</string>
+    <string name="textNo">No</string>
+    <string name="toastCaracteresContrasena">The password must have at least 8 characters</string>
+</resources>

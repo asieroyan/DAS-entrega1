@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView btnClickRegistrar = findViewById(R.id.btnClickRegistrar);
+        btnClickRegistrar.setText(R.string.textSinCuenta);
         btnClickRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
+        btnIniciarSesion.setText(R.string.btnIniciarSesion);
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,14 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
                 int codigo = GestorUsuarios.getGestorUsuarios().login(MainActivity.this, email, contrasena);
                 if (codigo == 0) {
-                    Toast.makeText(MainActivity.this, "Error al conectarse a la BD", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
                 } else if (codigo == 1) {
-                    Toast.makeText(MainActivity.this, "Error en las credenciales", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Inicio de sesión correcto", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
-                    finish();
                 }
             }
         });
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("¿Seguro que quieres salir?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.textConfirmarCerrar).setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 finish();
             }

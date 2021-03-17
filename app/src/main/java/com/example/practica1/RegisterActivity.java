@@ -22,6 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         Button btnVolverLogin = findViewById(R.id.btnVolverLogin);
+        btnVolverLogin.setText(R.string.btnVolverLogin);
         btnVolverLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         Button btnRegistrarse = findViewById(R.id.btnRegistrarse);
+        btnRegistrarse.setText(R.string.btnRegistrarse);
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,21 +46,20 @@ public class RegisterActivity extends AppCompatActivity {
                 String contrasena = "" + editTextContrasena.getText();
                 String confirmarContrasena = "" + editTextConfirmarContrasena.getText();
                 if (!matcher.find()) {
-                    Toast.makeText(RegisterActivity.this, "El formato del email es inválido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, R.string.toastFormatoEmail, Toast.LENGTH_SHORT).show();
                 } else {
                     if (contrasena.length() < 8) {
-                        Toast.makeText(RegisterActivity.this, "La contraseña debe tener al menos 8 caracteres", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, R.string.toastCaracteresContrasena, Toast.LENGTH_SHORT).show();
                     } else {
                         if (!contrasena.equals(confirmarContrasena)) {
-                            Toast.makeText(RegisterActivity.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, R.string.toastContrasenasCoinciden, Toast.LENGTH_SHORT).show();
                         } else {
                             int codigo = GestorUsuarios.getGestorUsuarios().anadirNuevoUsuario(RegisterActivity.this, email, contrasena);
                             if (codigo == 0) {
-                                Toast.makeText(RegisterActivity.this, "Error al acceder a la BD", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
                             } else if (codigo == 1){
-                                Toast.makeText(RegisterActivity.this, "El usuario ya existe", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(RegisterActivity.this, "Usuario añadido con éxito", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();

@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Práctica 1</string>
     <string name="titulo">Inicia sesión con tu email y contraseña</string>
-    <string name="editTextEmail">Introduce tu email</string>
+    <string name="editTextEmail">Introdruce tu contraseña</string>
     <string name="editTextContrasena">Introduce tu contraseña</string>
     <string name="btnIniciarSesion">INICIAR SESIÓN</string>
     <string name="textSinCuenta">¿No tienes cuenta? Click aquí</string>
