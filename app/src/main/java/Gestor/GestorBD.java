@@ -14,8 +14,22 @@ import androidx.annotation.Nullable;
 public class GestorBD extends SQLiteOpenHelper {
 
     // Atributos para la conexión con la BD
-    private String sqlCreate = "CREATE TABLE usuarios ('Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'Email' VARCHAR(255), 'Contrasena' VARCHAR(255))";
+    private final String sqlCreate =
+            "CREATE TABLE usuarios (" +
+                "'Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "'Email' VARCHAR(80), " +
+                "'Contrasena' VARCHAR(40)" +
+            ")";
 
+    private final String sqlCreate2 =
+            "CREATE TABLE anuncios (" +
+                "'Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "'Fotourl' VARCHAR(255), " +
+                "'Titulo' VARCHAR(100)," +
+                "'Descripcion' TEXT," +
+                "'Contacto' VARCHAR(255)," +
+                "'EmailAnunciante' VARCHAR(80)" +
+            ")";
     // Constructora pública
     GestorBD(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
         super(context, name, factory, version);
@@ -25,6 +39,7 @@ public class GestorBD extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(sqlCreate);
+        db.execSQL(sqlCreate2);
     }
 
     @Override

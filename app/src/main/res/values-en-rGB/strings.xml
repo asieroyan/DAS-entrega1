@@ -20,4 +20,5 @@
     <string name="textSi">Yes</string>
     <string name="textNo">No</string>
     <string name="toastCaracteresContrasena">The password must have at least 8 characters</string>
+    <string name="textTituloContacto">"Contact: "</string>
 </resources>

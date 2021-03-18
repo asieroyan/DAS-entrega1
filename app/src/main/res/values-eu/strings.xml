@@ -20,4 +20,5 @@
     <string name="textSi">Bai</string>
     <string name="textNo">Ez</string>
     <string name="toastCaracteresContrasena">"Pasahitza 8 karakter izan behar ditu gutxienez "</string>
+    <string name="textTituloContacto">"Kontaktua: "</string>
 </resources>
