@@ -21,4 +21,13 @@
     <string name="textNo">Ez</string>
     <string name="toastCaracteresContrasena">"Pasahitza 8 karakter izan behar ditu gutxienez "</string>
     <string name="textTituloContacto">"Kontaktua: "</string>
+    <string name="btnAnadirAnuncio">Iragarki berria jarri</string>
+    <string name="textTituloAnadirAnuncio">Sartu iragarkiaren datuak</string>
+    <string name="btnConfirmarAnuncio">Iragarkia argitaratu</string>
+    <string name="hintTituloAnuncio">Titulua</string>
+    <string name="hintDescripcion">Deskribapena</string>
+    <string name="hintUrlFoto">Irudiaren url-a</string>
+    <string name="hintContacto">Kontaktua (email/tlf)</string>
+    <string name="notifTitle">Iragarki berria</string>
+    <string name="notifText">Iragarki berri bat argitaratu da</string>
 </resources>

@@ -20,4 +20,13 @@
     <string name="textNo">No</string>
     <string name="toastCaracteresContrasena">La contraseña debe tener al menos 8 caracteres</string>
     <string name="textTituloContacto">Contacto:</string>
+    <string name="btnAnadirAnuncio">Añadir anuncio nuevo</string>
+    <string name="textTituloAnadirAnuncio">Introduce los datos del anuncio</string>
+    <string name="btnConfirmarAnuncio">Publicar anuncio</string>
+    <string name="hintTituloAnuncio">Título</string>
+    <string name="hintDescripcion">Descripción</string>
+    <string name="hintUrlFoto">Url de la imagen</string>
+    <string name="hintContacto">Contacto</string>
+    <string name="notifTitle">Nuevo anuncio</string>
+    <string name="notifText">Se ha publicado un nuevo anuncio</string>
 </resources>

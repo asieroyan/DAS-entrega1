@@ -4,12 +4,13 @@ public class GestorConstantes {
 
     private static GestorConstantes mGestorConstantes;
     private boolean sesion;
+    private boolean datosCargados = false;
 
     private GestorConstantes() {
 
     }
 
-    public GestorConstantes getGestorConstantes() {
+    public static GestorConstantes getGestorConstantes() {
         if (mGestorConstantes == null) {
             mGestorConstantes = new GestorConstantes();
         }
@@ -21,5 +22,13 @@ public class GestorConstantes {
 
     public void setSesion(boolean param) {
         this.sesion = param;
+    }
+
+    public boolean getDatosCargados(){
+        return this.datosCargados;
+    }
+
+    public void cambiarDatosCargados(){
+        this.datosCargados = !this.datosCargados;
     }
 }

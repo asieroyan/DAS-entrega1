@@ -10,6 +10,7 @@
         android:id="@+id/textTituloAnuncio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="TextView"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/textDescripcionAnuncio"
@@ -61,10 +62,10 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textTituloContacto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textTituloContacto"
-        app:layout_constraintTop_toBottomOf="@+id/imageAnuncio"
-        app:layout_constraintVertical_bias="0.183" />
+        app:layout_constraintTop_toTopOf="@+id/textTituloContacto"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

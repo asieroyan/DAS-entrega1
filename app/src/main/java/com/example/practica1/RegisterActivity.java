@@ -60,8 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
                             } else if (codigo == 1){
                                 Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                startActivity(intent);
                                 finish();
                             }
                         }

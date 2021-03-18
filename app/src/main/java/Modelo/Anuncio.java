@@ -17,6 +17,10 @@ public class Anuncio {
         this.emailAnunciante = pEmailAnunciante;
     }
 
+    public int getCodigo(){
+        return this.codigo;
+    }
+
     public String getFotourl(){
         return this.fotourl;
     }

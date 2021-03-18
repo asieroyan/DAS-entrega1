@@ -21,4 +21,13 @@
     <string name="textNo">No</string>
     <string name="toastCaracteresContrasena">The password must have at least 8 characters</string>
     <string name="textTituloContacto">"Contact: "</string>
+    <string name="btnAnadirAnuncio">Add new advertisement</string>
+    <string name="textTituloAnadirAnuncio">Insert advertisement data</string>
+    <string name="btnConfirmarAnuncio">Publish advertisement</string>
+    <string name="hintTituloAnuncio">Title</string>
+    <string name="hintDescripcion">Description</string>
+    <string name="hintUrlFoto">Image url</string>
+    <string name="hintContacto">Contact (email/tlf)</string>
+    <string name="notifTitle">New advertisement</string>
+    <string name="notifText">A new advertisement has been published</string>
 </resources>

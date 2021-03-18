@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    intent.putExtra("email", email);
                     startActivity(intent);
                 }
             }
@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(R.string.textConfirmarCerrar).setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.textConfirmarCerrar).setPositiveButton(R.string.textSi, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 finish();
             }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.textNo, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
             }
