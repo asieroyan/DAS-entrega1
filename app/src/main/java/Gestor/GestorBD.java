@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 // acción para no saturar la BD.
 public class GestorBD extends SQLiteOpenHelper {
 
+
     // Atributos para la conexión con la BD
     private final String sqlCreate =
             "CREATE TABLE usuarios (" +
@@ -49,7 +50,6 @@ public class GestorBD extends SQLiteOpenHelper {
 
     public void ejecutarUpdate(SQLiteDatabase db, String query) {
         db.execSQL(query);
-        db.execSQL(sqlCreate);
     }
 
     public Cursor ejecutarConsulta(SQLiteDatabase db, String query) {

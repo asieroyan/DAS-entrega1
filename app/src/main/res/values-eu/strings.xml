@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Praktika 1</string>
-    <string name="titulo">Hasi saioa zure emailarekin eta pasahitzarekin</string>
-    <string name="editTextEmail">Sartu zure emaila</string>
-    <string name="editTextContrasena">Sartu zure pasahitza</string>
     <string name="btnIniciarSesion">HASI SAIOA</string>
     <string name="textSinCuenta">Ez duzu akonturik) Klik hemen</string>
-    <string name="textTituloRegistro">Sartu zure datuak izena emateko</string>
-    <string name="editTextRepetirContrasena">Pasahitza errepikatu</string>
     <string name="btnRegistrarse">IZENA EMAN</string>
     <string name="btnVolverLogin">LOGINERA BUELTATU</string>
     <string name="toastFormatoEmail">Emailaren formatua es da zuzena</string>
@@ -30,4 +25,5 @@
     <string name="hintContacto">Kontaktua (email/tlf)</string>
     <string name="notifTitle">Iragarki berria</string>
     <string name="notifText">Iragarki berri bat argitaratu da</string>
+    <string name="textEliminarAnuncio">Iragarkia ezabatu nahi duzu?</string>
 </resources>

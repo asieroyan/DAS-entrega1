@@ -44,10 +44,11 @@ public class GestorAnuncios {
                 }
             }
         }
-
+        db.close();
         Anuncio anuncio = new Anuncio(codigoMax, fotourl, titulo, descripcion, contacto, email);
         this.listaAnuncios.add(anuncio);
     }
+
     public void eliminarAnuncio(Context context, Anuncio anuncio) {
         this.listaAnuncios.remove(anuncio);
         GestorBD gestor = new GestorBD(context, "DBUsuarios", null, 1);
@@ -56,6 +57,7 @@ public class GestorAnuncios {
         if (db != null){
             gestor.ejecutarUpdate(db, update);
         }
+        db.close();
     }
 
     public ArrayList<Anuncio> getAnuncios () {
@@ -78,6 +80,11 @@ public class GestorAnuncios {
                 this.listaAnuncios.add(anuncio);
             }
         }
+        db.close();
+    }
+
+    private int getCount() {
+        return this.listaAnuncios.size();
     }
 
     public ArrayList<Anuncio> obtenerAnunciosPorEmail (String email) {
@@ -86,6 +93,46 @@ public class GestorAnuncios {
             if(anuncio.getEmailAnunciante() == email) {
                 resultado.add(anuncio);
             }
+        }
+        return resultado;
+    }
+
+    public String[] getTitulos (){
+        String[] resultado = new String[this.getCount()];
+        int i = 0;
+        for (Anuncio anuncio : this.listaAnuncios) {
+            resultado[i] = anuncio.getTitulo();
+            i++;
+        }
+        return resultado;
+    }
+
+    public String[] getDescripciones (){
+        String[] resultado = new String[this.getCount()];
+        int i = 0;
+        for (Anuncio anuncio : this.listaAnuncios) {
+            resultado[i] = anuncio.getDescripcion();
+            i++;
+        }
+        return resultado;
+    }
+
+    public String[] getContactos (){
+        String[] resultado = new String[this.getCount()];
+        int i = 0;
+        for (Anuncio anuncio : this.listaAnuncios) {
+            resultado[i] = anuncio.getContacto();
+            i++;
+        }
+        return resultado;
+    }
+
+    public String[] getFotosUrl (){
+        String[] resultado = new String[this.getCount()];
+        int i = 0;
+        for (Anuncio anuncio : this.listaAnuncios) {
+            resultado[i] = anuncio.getFotourl();
+            i++;
         }
         return resultado;
     }

@@ -32,7 +32,9 @@ public class GestorUsuarios {
                 String update = "INSERT INTO usuarios(Email, Contrasena) VALUES(\'" + email + "\',\'" + contrasena + "\');";
                 gestor.ejecutarUpdate(db, update);
             }
+            cs.close();
         }
+        db.close();
         return resultado;
     }
 
@@ -54,8 +56,10 @@ public class GestorUsuarios {
                 if (contrasena.equals(contrasenaActual)) {
                     resultado = 2; // credenciales correctas
                 }
-             }
+            }
+            cs.close();
         }
+        db.close();
         return resultado;
     }
 }

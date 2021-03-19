@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Practice 1</string>
-    <string name="titulo">Log in with your email and password</string>
-    <string name="editTextEmail">Enter your email</string>
-    <string name="editTextContrasena">Enter your password</string>
     <string name="btnIniciarSesion">LOG IN</string>
     <string name="textSinCuenta">Don´t have an account? Click here</string>
-    <string name="textTituloRegistro">Enter your data for register</string>
-    <string name="editTextRepetirContrasena">Repeat the password</string>
     <string name="btnRegistrarse">REGISTER</string>
     <string name="btnVolverLogin">RETURN TO LOGIN</string>
     <string name="toastFormatoEmail">Email format is not valid</string>
@@ -30,4 +25,5 @@
     <string name="hintContacto">Contact (email/tlf)</string>
     <string name="notifTitle">New advertisement</string>
     <string name="notifText">A new advertisement has been published</string>
+    <string name="textEliminarAnuncio">Do you want to delete this advertisement?</string>
 </resources>

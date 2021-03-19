@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Práctica 1</string>
-    <string name="titulo">Inicia sesión con tu email y contraseña</string>
-    <string name="editTextEmail">Introdruce tu contraseña</string>
-    <string name="editTextContrasena">Introduce tu contraseña</string>
     <string name="btnIniciarSesion">INICIAR SESIÓN</string>
     <string name="textSinCuenta">¿No tienes cuenta? Click aquí</string>
-    <string name="textTituloRegistro">Introduce tus datos de registro</string>
-    <string name="editTextRepetirContrasena">Repite la contraseña</string>
     <string name="btnRegistrarse">REGISTRARSE</string>
     <string name="btnVolverLogin">VOLVER AL LOGIN</string>
     <string name="toastFormatoEmail">El formato del email es inválido</string>
@@ -30,4 +25,5 @@
     <string name="hintContacto">Contacto (email/tlf)</string>
     <string name="notifTitle">Nuevo anuncio</string>
     <string name="notifText">Se ha publicado un nuevo anuncio</string>
+    <string name="textEliminarAnuncio">¿Quieres eliminar este anuncio?</string>
 </resources>

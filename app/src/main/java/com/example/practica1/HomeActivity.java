@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import Adaptador.AdaptadorListView;
 import Gestor.GestorAnuncios;
 import Gestor.GestorConstantes;
 import Modelo.Anuncio;
@@ -29,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
 
-        String email = getIntent().getExtras().getString("email");
+        String email = getIntent().getStringExtra("email");
         Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         btnCerrarSesion.setText(R.string.btnCerrarSesion);
         btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -60,10 +61,16 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         final ListView list = findViewById(R.id.listAnunciosAjenos);
         GestorAnuncios.getGestorAnuncios().cargarAnuncios(HomeActivity.this);
+        String[] titulos = GestorAnuncios.getGestorAnuncios().getTitulos();
+        String[] descripciones = GestorAnuncios.getGestorAnuncios().getDescripciones();
+        String[] fotosUrl = GestorAnuncios.getGestorAnuncios().getFotosUrl();
+        String[] contactos = GestorAnuncios.getGestorAnuncios().getContactos();
         ArrayList<Anuncio> listAnuncios = GestorAnuncios.getGestorAnuncios().getAnuncios();
-        ArrayAdapter<Anuncio> arrayAdapter = new ArrayAdapter<Anuncio>(this, android.R.layout.simple_list_item_1, listAnuncios);
+        AdaptadorListView arrayAdapter = new AdaptadorListView(this, titulos, descripciones, fotosUrl, contactos);
         list.setAdapter(arrayAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Comprobar si el usuario actual es admin o ha creado este anuncio para permitir borrarlo
                 if (email.equals(anuncio.getEmailAnunciante()) || email.equals("as@as.as")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                    builder.setMessage(R.string.textConfirmarCerrar).setPositiveButton(R.string.textSi, new DialogInterface.OnClickListener() {
+                    builder.setMessage(R.string.textEliminarAnuncio).setPositiveButton(R.string.textSi, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             GestorAnuncios.getGestorAnuncios().eliminarAnuncio(HomeActivity.this, anuncio);
                             Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
@@ -97,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
                     });
                     builder.show();
                 }
-                return false;
+                return true;
             }
         });
     }
