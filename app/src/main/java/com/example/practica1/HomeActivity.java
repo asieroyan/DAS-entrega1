@@ -6,6 +6,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +25,7 @@ import Modelo.Anuncio;
 public class HomeActivity extends AppCompatActivity {
 
     private boolean datosCargados = false;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,39 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        String email = getIntent().getStringExtra("email");
-        Button btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
-        btnCerrarSesion.setText(R.string.btnCerrarSesion);
-        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        Button btnAjustes = findViewById(R.id.btnAjustes);
-        btnAjustes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnAnadirAnuncio = findViewById(R.id.btnAnadirAnuncio);
-        btnAnadirAnuncio.setText(R.string.btnAnadirAnuncio);
-        btnAnadirAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, AnadirAnuncioActivity.class);
-                intent.putExtra("email", email);
-                startActivity(intent);
-                // finish();
-            }
-        });
-
-
+        email = getIntent().getStringExtra("email");
 
         final ListView list = findViewById(R.id.listAnunciosAjenos);
         GestorAnuncios.getGestorAnuncios().cargarAnuncios(HomeActivity.this);
@@ -113,5 +85,31 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuAjustes:
+                Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menuAnadirAnuncio:
+                Intent intent1 = new Intent(HomeActivity.this, AnadirAnuncioActivity.class);
+                intent1.putExtra("email", email);
+                startActivity(intent1);
+                return true;
+            case R.id.menuCerrarSesion:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 }

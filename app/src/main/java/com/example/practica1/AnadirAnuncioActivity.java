@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import Gestor.GestorAnuncios;
 
+// Actividad que representa la pantalla de añadir un nuevo anuncio y su funcionalidad
 public class AnadirAnuncioActivity extends AppCompatActivity {
 
     @Override
@@ -24,6 +25,7 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anadir_anuncio);
 
+        // Configuración de los cuadros de texto y de input
         TextView textTituloAnadirAnuncio = findViewById(R.id.textTituloAnadirAnuncio);
         textTituloAnadirAnuncio.setText(R.string.textTituloAnadirAnuncio);
 
@@ -39,40 +41,79 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
         EditText editTextContactoAnuncio = findViewById(R.id.editTextContactoAnuncio);
         editTextContactoAnuncio.setHint(R.string.hintContacto);
 
+        // Funcionalidad del botón de añadir un anuncio.
         Button btnConfirmarAnuncio = findViewById(R.id.btnConfirmarAnuncio);
         btnConfirmarAnuncio.setText(R.string.btnConfirmarAnuncio);
         btnConfirmarAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Recoger los datos de los inputs de texto
                 String titulo = "" + editTextTitulo.getText();
                 String descripcion = "" + editTextDescripcionAnuncio.getText();
                 String fotourl = "" + editTextFotourl.getText();
                 String contacto = "" + editTextContactoAnuncio.getText();
                 String email = getIntent().getExtras().getString("email");
 
-                GestorAnuncios.getGestorAnuncios().anadirAnuncio(AnadirAnuncioActivity.this, titulo, descripcion, fotourl, contacto, email);
+                // Llamar al gestor de anuncios para añadirlo a la base de datos y devuelve un true si todo ha ido bien
+                boolean ok = GestorAnuncios.getGestorAnuncios().anadirAnuncio(AnadirAnuncioActivity.this, titulo, descripcion, fotourl, contacto, email);
 
-                NotificationManager elManager = (NotificationManager)getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-                NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getApplicationContext(), "IdCanal");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    NotificationChannel elCanal = new NotificationChannel("IdCanal", "NombreCanal", NotificationManager.IMPORTANCE_DEFAULT);
-                    elManager.createNotificationChannel(elCanal);
+                //Ejecutar distintas notificaciones dependiendo del resultado
+                if (ok) {
+                    notificarAnadirAnuncio();
+                } else {
+                    notificarError();
                 }
-                elBuilder.setSmallIcon(android.R.drawable.stat_sys_upload_done)
-                        .setContentTitle(getResources().getString(R.string.notifTitle))
-                        .setContentText(getResources().getString(R.string.notifText))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setAutoCancel(true);
-                elManager.notify(1, elBuilder.build());
                 finish();
             }
         });
     }
-
+    /*
     @Override
     public void onBackPressed() {
+
         Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+*/
+    private void notificarAnadirAnuncio(){
+        // Construir el manager y el builder
+        NotificationManager elManager = (NotificationManager)getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+        NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getApplicationContext(), "IdCanal");
+
+        // Si la versión de android es reciente, construir el canal
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel elCanal = new NotificationChannel("IdCanal", "CanalOK", NotificationManager.IMPORTANCE_DEFAULT);
+            elManager.createNotificationChannel(elCanal);
+        }
+        // Configurar los datos de la notificación
+        elBuilder.setSmallIcon(android.R.drawable.stat_sys_upload_done)
+                .setContentTitle(getResources().getString(R.string.notifTitle))
+                .setContentText(getResources().getString(R.string.notifText))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+
+        // Ejecutar la notificación
+        elManager.notify(1, elBuilder.build());
+    }
+
+    private void notificarError(){
+        // Construir el manager y el builder
+        NotificationManager elManager = (NotificationManager)getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+        NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getApplicationContext(), "IdCanalError");
+
+        // Si la versión de android es reciente, construir el canal
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel elCanal = new NotificationChannel("IdCanalError", "CanalError", NotificationManager.IMPORTANCE_DEFAULT);
+            elManager.createNotificationChannel(elCanal);
+        }
+        // Configurar los datos de la notificación
+        elBuilder.setSmallIcon(android.R.drawable.stat_sys_upload_done)
+                .setContentTitle(getResources().getString(R.string.notifErrorTitle))
+                .setContentText(getResources().getString(R.string.notifErrorText))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+        // Ejecutar la notificación
+        elManager.notify(1, elBuilder.build());
     }
 }

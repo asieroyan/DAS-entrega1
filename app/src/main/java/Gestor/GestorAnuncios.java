@@ -24,13 +24,13 @@ public class GestorAnuncios {
         return mGestorAnuncios;
     }
 
-    public void anadirAnuncio(Context context, String titulo, String descripcion, String fotourl, String contacto, String email) {
-        int resultado = 0; // Error al acceder a la base de datos
+    public boolean anadirAnuncio(Context context, String titulo, String descripcion, String fotourl, String contacto, String email) {
+        boolean resultado = false; // Error al acceder a la base de datos
         GestorBD gestor = new GestorBD(context, "DBUsuarios", null, 1);
         SQLiteDatabase db = gestor.getWritableDatabase();
         int codigoMax = 0;
         if (db != null){
-            resultado = 1; // Anuncio añadido
+            resultado = true; // Anuncio añadido
             String update = "INSERT INTO anuncios(Fotourl, Titulo, Descripcion, Contacto, EmailAnunciante) VALUES(\'" + fotourl + "\',\'" + titulo + "\',\'" + descripcion + "\',\'" + contacto + "\',\'" + email + "\');";
             gestor.ejecutarUpdate(db, update);
         }
@@ -47,6 +47,7 @@ public class GestorAnuncios {
         db.close();
         Anuncio anuncio = new Anuncio(codigoMax, fotourl, titulo, descripcion, contacto, email);
         this.listaAnuncios.add(anuncio);
+        return resultado;
     }
 
     public void eliminarAnuncio(Context context, Anuncio anuncio) {

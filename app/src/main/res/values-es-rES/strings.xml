@@ -10,7 +10,7 @@
     <string name="toastUsuarioExiste">El usuario ya existe</string>
     <string name="toastErrorCredenciales">Error en las credenciales</string>
     <string name="toastErrorBD">Error al conectarse a la BD</string>
-    <string name="btnCerrarSesion">CERRAR SESIÓN</string>
+    <string name="btnCerrarSesion">Cerrar sesión</string>
     <string name="textConfirmarCerrar">¿Seguro que quieres salir?</string>
     <string name="textSi">Sí</string>
     <string name="textNo">No</string>
@@ -26,4 +26,7 @@
     <string name="notifTitle">Nuevo anuncio</string>
     <string name="notifText">Se ha publicado un nuevo anuncio</string>
     <string name="textEliminarAnuncio">¿Quieres eliminar este anuncio?</string>
+    <string name="notifErrorTitle">Error</string>
+    <string name="notifErrorText">Error al añadir el anuncio</string>
+    <string name="btnAjustes">Ajustes</string>
 </resources>

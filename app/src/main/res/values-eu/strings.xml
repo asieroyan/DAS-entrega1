@@ -10,7 +10,7 @@
     <string name="toastUsuarioExiste">"Erabiltzailea hartuta dago "</string>
     <string name="toastErrorCredenciales">Email edo pasahitza okerrak</string>
     <string name="toastErrorBD">Errorea DBarekin</string>
-    <string name="btnCerrarSesion">SAIOA ITXI</string>
+    <string name="btnCerrarSesion">Saioa itxi</string>
     <string name="textConfirmarCerrar">Ziur zaude irten nahi zarela?</string>
     <string name="textSi">Bai</string>
     <string name="textNo">Ez</string>
@@ -26,4 +26,7 @@
     <string name="notifTitle">Iragarki berria</string>
     <string name="notifText">Iragarki berri bat argitaratu da</string>
     <string name="textEliminarAnuncio">Iragarkia ezabatu nahi duzu?</string>
+    <string name="notifErrorTitle">Errorea</string>
+    <string name="notifErrorText">Errorea iragarkia eranstean</string>
+    <string name="btnAjustes">Ezarpenak</string>
 </resources>

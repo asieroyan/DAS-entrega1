@@ -10,7 +10,7 @@
     <string name="toastUsuarioExiste">User already exists</string>
     <string name="toastErrorCredenciales">Incorrect email or password</string>
     <string name="toastErrorBD">Error in DB connection</string>
-    <string name="btnCerrarSesion">LOG OUT</string>
+    <string name="btnCerrarSesion">Log out</string>
     <string name="textConfirmarCerrar">Are you sure you want to exit?</string>
     <string name="textSi">Yes</string>
     <string name="textNo">No</string>
@@ -26,4 +26,7 @@
     <string name="notifTitle">New advertisement</string>
     <string name="notifText">A new advertisement has been published</string>
     <string name="textEliminarAnuncio">Do you want to delete this advertisement?</string>
+    <string name="notifErrorTitle">Error</string>
+    <string name="notifErrorText">Error at adding the advertisement</string>
+    <string name="btnAjustes">Settings</string>
 </resources>
