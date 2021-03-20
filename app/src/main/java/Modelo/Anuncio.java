@@ -1,6 +1,8 @@
 package Modelo;
 
 public class Anuncio {
+
+    // Atributos del anuncio
     private int codigo;
     private String fotourl;
     private String titulo;
@@ -8,6 +10,7 @@ public class Anuncio {
     private String contacto;
     private String emailAnunciante;
 
+    // Constructora del anuncio
     public Anuncio(int pCodigo, String pFotoUrl, String pTitulo, String pDescripcion, String pContacto, String pEmailAnunciante) {
         this.codigo = pCodigo;
         this.fotourl = pFotoUrl;
@@ -17,6 +20,7 @@ public class Anuncio {
         this.emailAnunciante = pEmailAnunciante;
     }
 
+    // Getters para todos los elementos del anuncio
     public int getCodigo(){
         return this.codigo;
     }

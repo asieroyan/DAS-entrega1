@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 public class GestorBD extends SQLiteOpenHelper {
 
 
-    // Atributos para la conexión con la BD
+    // Consultas a ejecutar en la creación de la BD
     private final String sqlCreate =
             "CREATE TABLE usuarios (" +
                 "'Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -39,20 +39,25 @@ public class GestorBD extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Método que se ejecuta al crearse la BD, añade las dos tablas necesarias a la BD
         db.execSQL(sqlCreate);
         db.execSQL(sqlCreate2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS Usuarios");
+        // Se ejecuta al actualizar la BD
+        db.execSQL("DROP TABLE IF EXISTS usuarios");
+        db.execSQL("DROP TABLE IF EXISTS anuncios");
     }
 
     public void ejecutarUpdate(SQLiteDatabase db, String query) {
+        // Recibe una sentencia SQL de update y la ejecuta
         db.execSQL(query);
     }
 
     public Cursor ejecutarConsulta(SQLiteDatabase db, String query) {
+        // Recibe una sentencia SQL de consulta y la ejecuta, devolviendo un cursor de resultado
         return db.rawQuery(query, null);
     }
 }

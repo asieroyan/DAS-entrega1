@@ -12,12 +12,13 @@ public class AnuncioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncio);
-
+        // Recibe parámetros de la actividad Home
         String fotourl = getIntent().getExtras().getString("fotourl");
         String titulo = getIntent().getExtras().getString("titulo");
         String descripcion = getIntent().getExtras().getString("descripcion");
         String contacto = getIntent().getExtras().getString("contacto");
 
+        // Configuración de los elementos del layout
         TextView textTituloAnuncio = findViewById(R.id.textTituloAnuncio);
         textTituloAnuncio.setText(titulo);
 

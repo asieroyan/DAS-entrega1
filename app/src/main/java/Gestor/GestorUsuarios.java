@@ -1,10 +1,10 @@
 package Gestor;
-// imports para manejar los resultados de las consultas
+// imports para manejar los resultados de las consultas y realizarlas
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-// clase Singleton
+// clase Singleton para la gestión de los usuarios de la BD
 public class GestorUsuarios {
     private static GestorUsuarios mGestorUsuarios = null;
 
@@ -34,6 +34,7 @@ public class GestorUsuarios {
             }
             cs.close();
         }
+        // Cerrar la BD
         db.close();
         return resultado;
     }
@@ -59,6 +60,7 @@ public class GestorUsuarios {
             }
             cs.close();
         }
+        // Cerrar la BD
         db.close();
         return resultado;
     }
