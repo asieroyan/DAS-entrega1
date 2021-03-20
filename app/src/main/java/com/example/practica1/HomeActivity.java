@@ -124,6 +124,7 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(HomeActivity.this, AnadirAnuncioActivity.class);
                 intent1.putExtra("email", email);
                 startActivity(intent1);
+                finish();
                 return true;
             case R.id.menuCerrarSesion:
                 // Terminar la actividad actual

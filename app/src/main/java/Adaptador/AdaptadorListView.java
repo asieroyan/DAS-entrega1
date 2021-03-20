@@ -15,6 +15,8 @@ import com.example.practica1.R;
 import java.io.IOException;
 import java.net.URL;
 
+import Gestor.GestorDescargasImagen;
+
 public class AdaptadorListView extends BaseAdapter {
     //Clase para hacer un adaptador de ListView personalizado
 
@@ -64,15 +66,7 @@ public class AdaptadorListView extends BaseAdapter {
         TextView nombre= (TextView) view.findViewById(R.id.textFilaListaTitulo);
         nombre.setText(titulos[position]);
         ImageView img=(ImageView) view.findViewById(R.id.fotoUrlLista);
-        // Configurar la imagen con la URL
-        Bitmap bmp = null;
-        try {
-            URL url = new URL(fotosUrl[position]);
-            // bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // img.setImageBitmap(bmp);
+        new GestorDescargasImagen(img).execute(fotosUrl[position]);
         return view;
     }
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import Gestor.GestorDescargasImagen;
+
 public class AnuncioActivity extends AppCompatActivity {
 
     @Override
@@ -26,7 +28,7 @@ public class AnuncioActivity extends AppCompatActivity {
         textDescripcion.setText(descripcion);
 
         ImageView imageAnuncio = findViewById(R.id.imageAnuncio);
-        // imageAnuncio.setImageURI(fotourl);
+        new GestorDescargasImagen(imageAnuncio).execute(fotourl);
 
         TextView textTituloContacto = findViewById(R.id.textTituloContacto);
         textTituloContacto.setText(R.string.textTituloContacto);

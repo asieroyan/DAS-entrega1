@@ -63,19 +63,22 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 } else {
                     notificarError();
                 }
+                // Intent a HomeActivity para que se actualice si hay cambios
+                Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
     }
-    /*
+
     @Override
     public void onBackPressed() {
-
+        // Vuelve a la actividad Home
         Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
-*/
+
     private void notificarAnadirAnuncio(){
         // Construir el manager y el builder
         NotificationManager elManager = (NotificationManager)getSystemService(getApplicationContext().NOTIFICATION_SERVICE);

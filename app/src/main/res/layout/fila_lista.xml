@@ -6,19 +6,19 @@
 
     <ImageView
         android:id="@+id/fotoUrlLista"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="94dp"
+        android:layout_height="72dp"
         android:padding="5dp" />
 
     <TextView
         android:id="@+id/textFilaListaTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Medium Text"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:padding="2dp"
-        android:textColor="#4d4d4d" />
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#4d4d4d"
+        android:textStyle="bold" />
 </LinearLayout>
