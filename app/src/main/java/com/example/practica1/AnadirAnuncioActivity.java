@@ -3,9 +3,11 @@ package com.example.practica1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -50,17 +52,18 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
 
                 GestorAnuncios.getGestorAnuncios().anadirAnuncio(AnadirAnuncioActivity.this, titulo, descripcion, fotourl, contacto, email);
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(AnadirAnuncioActivity.this, "canal1")
+                NotificationManager elManager = (NotificationManager)getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+                NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(getApplicationContext(), "IdCanal");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel elCanal = new NotificationChannel("IdCanal", "NombreCanal", NotificationManager.IMPORTANCE_DEFAULT);
+                    elManager.createNotificationChannel(elCanal);
+                }
+                elBuilder.setSmallIcon(android.R.drawable.stat_sys_upload_done)
                         .setContentTitle(getResources().getString(R.string.notifTitle))
                         .setContentText(getResources().getString(R.string.notifText))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                Intent i = new Intent(AnadirAnuncioActivity.this, AnadirAnuncioActivity.class);
-                PendingIntent pendingI = PendingIntent.getActivity(AnadirAnuncioActivity.this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent (pendingI);
-                NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                nManager.notify(1, builder.build());
-                Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
-                startActivity(intent);
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true);
+                elManager.notify(1, elBuilder.build());
                 finish();
             }
         });
