@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textBienvenida"
-        android:layout_width="346dp"
-        android:layout_height="94dp"
-        android:layout_marginTop="188dp"
-        android:gravity="center"
-        android:text="Inicia sesión con tu email y contraseña"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Inicia sesión con tu email y contraseña" />
-
     <EditText
         android:id="@+id/editTextContraseña"
         android:layout_width="wrap_content"
@@ -43,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBienvenida" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/btnClickRegistrar"

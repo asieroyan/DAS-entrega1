@@ -15,9 +15,6 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-import Gestor.GestorConstantes;
-import Gestor.GestorUsuarios;
-
 public class AjustesActivity extends AppCompatActivity {
 
     @Override
@@ -38,7 +35,6 @@ public class AjustesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (locale.get(0).toString().equals("es")){}
                 else {
-                    GestorConstantes.getGestorConstantes().setIdioma("ENG");
                     cambiarIdioma("ESP");
                 }
             }
@@ -51,7 +47,6 @@ public class AjustesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (locale.get(0).toString().equals("eu")){}
                 else {
-                    GestorConstantes.getGestorConstantes().setIdioma("ENG");
                     cambiarIdioma("EUS");
                 }
             }
@@ -64,7 +59,6 @@ public class AjustesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (locale.get(0).toString().equals("en") || locale.get(0).toString().equals("en_GB")){}
                 else {
-                    GestorConstantes.getGestorConstantes().setIdioma("ENG");
                     cambiarIdioma("ENG");
                 }
             }
