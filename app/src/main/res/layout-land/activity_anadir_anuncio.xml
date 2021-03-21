@@ -71,8 +71,8 @@
 
     <Button
         android:id="@+id/btnConfirmarAnuncio"
-        android:layout_width="190dp"
-        android:layout_height="50dp"
+        android:layout_width="343dp"
+        android:layout_height="47dp"
         android:text="bUTTON"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

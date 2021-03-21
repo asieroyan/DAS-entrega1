@@ -115,9 +115,10 @@ public class HomeActivity extends AppCompatActivity {
         // Añadir la funcionalidad a las opciones del menú
         switch (item.getItemId()) {
             case R.id.menuAjustes:
-                // Llamar a la actividad Settings
-                Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+                // Llamar a la actividad Ajustes
+                Intent intent = new Intent(HomeActivity.this, AjustesActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.menuAnadirAnuncio:
                 // Llamar a la actividad de añadir anuncio
@@ -127,7 +128,8 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.menuCerrarSesion:
-                // Terminar la actividad actual
+                Intent intent2 = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(intent2);
                 finish();
                 return true;
             default:

@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/btnVolverLogin"
-        android:layout_width="168dp"
-        android:layout_height="48dp"
+        android:layout_width="190dp"
+        android:layout_height="56dp"
         android:text="Volver al login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

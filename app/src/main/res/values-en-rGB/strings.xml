@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Practice 1</string>
+    <string name="app_name">Ubay</string>
     <string name="btnIniciarSesion">LOG IN</string>
     <string name="textSinCuenta">Don´t have an account? Click here</string>
     <string name="btnRegistrarse">REGISTER</string>
@@ -29,4 +29,13 @@
     <string name="notifErrorTitle">Error</string>
     <string name="notifErrorText">Error at adding the advertisement</string>
     <string name="btnAjustes">Settings</string>
+    <string name="euskera">Basque</string>
+    <string name="english">English</string>
+    <string name="español">Spanish</string>
+    <string name="settingsIdioma">Select a language</string>
+    <string name="textInicio">Log in with your email and password</string>
+    <string name="hintEmail">Enter your email</string>
+    <string name="hintContrasena">Enter your password</string>
+    <string name="textRegistro">Enter register data</string>
+    <string name="hintRepiteContrasena">Repeat the password</string>
 </resources>

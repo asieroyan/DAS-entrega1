@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Práctica 1</string>
+    <string name="app_name">Ubay</string>
     <string name="btnIniciarSesion">INICIAR SESIÓN</string>
     <string name="textSinCuenta">¿No tienes cuenta? Click aquí</string>
     <string name="btnRegistrarse">REGISTRARSE</string>
@@ -28,4 +28,13 @@
     <string name="notifErrorTitle">Error</string>
     <string name="notifErrorText">Error al añadir el anuncio</string>
     <string name="btnAjustes">Ajustes</string>
+    <string name="euskera">Vasco</string>
+    <string name="english">Inglés</string>
+    <string name="español">Español</string>
+    <string name="settingsIdioma">Elige un idioma</string>
+    <string name="textInicio">Inicia sesión con tu email y contraseña</string>
+    <string name="hintEmail">Introduce tu email</string>
+    <string name="hintContrasena">Introduce tu contraseña</string>
+    <string name="textRegistro">Introduce los datos de registro</string>
+    <string name="hintRepiteContrasena">Repite la constraseña</string>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Praktika 1</string>
+    <string name="app_name">Ubay</string>
     <string name="btnIniciarSesion">HASI SAIOA</string>
-    <string name="textSinCuenta">Ez duzu akonturik) Klik hemen</string>
+    <string name="textSinCuenta">Ez duzu akonturik? Klik hemen</string>
     <string name="btnRegistrarse">IZENA EMAN</string>
     <string name="btnVolverLogin">LOGINERA BUELTATU</string>
     <string name="toastFormatoEmail">Emailaren formatua es da zuzena</string>
@@ -29,4 +29,13 @@
     <string name="notifErrorTitle">Errorea</string>
     <string name="notifErrorText">Errorea iragarkia eranstean</string>
     <string name="btnAjustes">Ezarpenak</string>
+    <string name="euskera">Euskera</string>
+    <string name="english">Ingelera</string>
+    <string name="español">Gaztelera</string>
+    <string name="settingsIdioma">Aukeratu hizkuntza</string>
+    <string name="textInicio">Saioa hasi zure emaila eta pasahitzarekin</string>
+    <string name="hintEmail">Sartu zure emaila</string>
+    <string name="hintContrasena">Sartu zure pasahitza</string>
+    <string name="textRegistro">Izena emateko datuak sartu</string>
+    <string name="hintRepiteContrasena">Pasahitza errepikatu</string>
 </resources>

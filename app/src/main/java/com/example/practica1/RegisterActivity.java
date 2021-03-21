@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -22,6 +23,18 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // Configuración de los elementos del layout
+        EditText editTextEmail = findViewById(R.id.editTextEmail2);
+        editTextEmail.setHint(R.string.hintEmail);
+
+        EditText editTextContrasena = findViewById(R.id.editTextContraseña2);
+        editTextContrasena.setHint(R.string.hintContrasena);
+
+        EditText editTextRepiteContrasena = findViewById(R.id.editTextConfirmarContraseña);
+        editTextRepiteContrasena.setHint(R.string.hintRepiteContrasena);
+
+        TextView tituloRegistro = findViewById(R.id.textRegister);
+        tituloRegistro.setText(R.string.textRegistro);
+
         Button btnVolverLogin = findViewById(R.id.btnVolverLogin);
         btnVolverLogin.setText(R.string.btnVolverLogin);
         btnVolverLogin.setOnClickListener(new View.OnClickListener() {

@@ -1,17 +1,24 @@
 package com.example.practica1;
 
+import Gestor.GestorConstantes;
 import Gestor.GestorUsuarios;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TextView tituloMain = findViewById(R.id.textBienvenida);
+        tituloMain.setText(R.string.textInicio);
+
+        EditText editTextEmail = findViewById(R.id.editTextEmail);
+        editTextEmail.setHint(R.string.hintEmail);
+
+        EditText editTextContrasena = findViewById(R.id.editTextContraseña);
+        editTextContrasena.setHint(R.string.hintContrasena);
 
         // Configuración de los elementos del layout
         TextView btnClickRegistrar = findViewById(R.id.btnClickRegistrar);
@@ -38,11 +54,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Obtener datos de los input
-                TextView textEmail = findViewById(R.id.editTextEmail);
-                String email = "" + textEmail.getText();
+                String email = "" + editTextEmail.getText();
 
-                TextView textContrasena = findViewById(R.id.editTextContraseña);
-                String contrasena = "" + textContrasena.getText();
+                String contrasena = "" + editTextContrasena.getText();
 
                 // Recibe el código del gestor de usuarios con los datos datos
                 int codigo = GestorUsuarios.getGestorUsuarios().login(MainActivity.this, email, contrasena);
@@ -57,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     intent.putExtra("email", email);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
