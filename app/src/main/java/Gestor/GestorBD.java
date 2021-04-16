@@ -8,56 +8,43 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
 // Esta clase realiza todas las acciones necesarias para el control de la BD sin tener que hacer una
 // llamada desde fuera de ella. Las conexiones abiertas se cierran al acabar de realizar una
 // acción para no saturar la BD.
-public class GestorBD extends SQLiteOpenHelper {
+public class GestorBD {
+    private static GestorBD mGestorBD;
+    private String servidor = "ec2-54-167-31-169.compute-1.amazonaws.com/";
+    private String puerto = "3306";
+    private String usuario = "Xaoyanguren004";
+    private String contrasena = "RKh1N49go";
 
-
-    // Consultas a ejecutar en la creación de la BD
-    private final String sqlCreate =
-            "CREATE TABLE usuarios (" +
-                "'Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                "'Email' VARCHAR(80), " +
-                "'Contrasena' VARCHAR(40)" +
-            ")";
-
-    private final String sqlCreate2 =
-            "CREATE TABLE anuncios (" +
-                "'Codigo' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                "'Fotourl' VARCHAR(255), " +
-                "'Titulo' VARCHAR(100)," +
-                "'Descripcion' TEXT," +
-                "'Contacto' VARCHAR(255)," +
-                "'EmailAnunciante' VARCHAR(80)" +
-            ")";
     // Constructora pública
-    GestorBD(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version){
-        super(context, name, factory, version);
+    private GestorBD(){}
+
+
+    public static  GestorBD getGestorBD() {
+        if (mGestorBD == null) {
+            mGestorBD = new GestorBD();
+        }
+        return mGestorBD;
     }
 
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // Método que se ejecuta al crearse la BD, añade las dos tablas necesarias a la BD
-        db.execSQL(sqlCreate);
-        db.execSQL(sqlCreate2);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public Connection conn() {
         // Se ejecuta al actualizar la BD
-        db.execSQL("DROP TABLE IF EXISTS usuarios");
-        db.execSQL("DROP TABLE IF EXISTS anuncios");
+        return new DriverManager.getConnection(this.servidor + ":" + this.puerto, this.usuario, this.contrasena);
     }
 
-    public void ejecutarUpdate(SQLiteDatabase db, String query) {
+    public void ejecutarUpdate(String query) {
         // Recibe una sentencia SQL de update y la ejecuta
-        db.execSQL(query);
+        Connection
     }
 
-    public Cursor ejecutarConsulta(SQLiteDatabase db, String query) {
-        // Recibe una sentencia SQL de consulta y la ejecuta, devolviendo un cursor de resultado
-        return db.rawQuery(query, null);
+    public ResultSet ejecutarConsulta(String query) {
+        // Recibe una sentencia SQL de consulta y la ejecuta, devolviendo un ResultSet de resultado
+
     }
 }
