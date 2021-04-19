@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Practica1">
+        android:theme="@style/Theme.Practica1"
+        android:usesCleartextTraffic="true">
         <activity android:name=".AjustesActivity" />
         <activity android:name=".AnadirAnuncioActivity" />
         <activity android:name=".AnuncioActivity" />
