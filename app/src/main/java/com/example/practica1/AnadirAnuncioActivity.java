@@ -2,28 +2,45 @@ package com.example.practica1;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.FileProvider;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import Gestor.GestorAnuncios;
 
 // Actividad que representa la pantalla de añadir un nuevo anuncio y su funcionalidad
 public class AnadirAnuncioActivity extends AppCompatActivity {
 
+    private Bitmap bitmap = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anadir_anuncio);
+
+        // Configuración del imageView del preview
+        ImageView imgPreview = findViewById(R.id.imgPreview);
+        imgPreview.setVisibility(View.INVISIBLE);
 
         // Configuración de los cuadros de texto y de input
         TextView textTituloAnadirAnuncio = findViewById(R.id.textTituloAnadirAnuncio);
@@ -35,11 +52,19 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
         EditText editTextDescripcionAnuncio = findViewById(R.id.editTextDescripcionAnuncio);
         editTextDescripcionAnuncio.setHint(R.string.hintDescripcion);
 
-        EditText editTextFotourl = findViewById(R.id.editTextFotourl);
-        editTextFotourl.setHint(R.string.hintUrlFoto);
-
         EditText editTextContactoAnuncio = findViewById(R.id.editTextContactoAnuncio);
         editTextContactoAnuncio.setHint(R.string.hintContacto);
+
+        // Funcionalidad del botón de sacar foto
+        Button btnSacarFoto = findViewById(R.id.btnSacarFoto);
+        btnSacarFoto.setText(R.string.btnSacarFoto);
+        btnSacarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent elIntentFoto= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(elIntentFoto, 14);
+            }
+        });
 
         // Funcionalidad del botón de añadir un anuncio.
         Button btnConfirmarAnuncio = findViewById(R.id.btnConfirmarAnuncio);
@@ -50,12 +75,12 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 // Recoger los datos de los inputs de texto
                 String titulo = "" + editTextTitulo.getText();
                 String descripcion = "" + editTextDescripcionAnuncio.getText();
-                String fotourl = "" + editTextFotourl.getText();
                 String contacto = "" + editTextContactoAnuncio.getText();
                 String email = getIntent().getExtras().getString("email");
+                Bitmap bitmapAct = AnadirAnuncioActivity.this.bitmap;
 
                 // Llamar al gestor de anuncios para añadirlo a la base de datos y devuelve un true si todo ha ido bien
-                boolean ok = GestorAnuncios.getGestorAnuncios().anadirAnuncio(AnadirAnuncioActivity.this, titulo, descripcion, fotourl, contacto, email);
+                boolean ok = GestorAnuncios.getGestorAnuncios().anadirAnuncio(AnadirAnuncioActivity.this, titulo, descripcion, bitmapAct, contacto, email);
 
                 //Ejecutar distintas notificaciones dependiendo del resultado
                 if (ok) {
@@ -118,5 +143,17 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 .setAutoCancel(true);
         // Ejecutar la notificación
         elManager.notify(1, elBuilder.build());
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 14 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap laminiatura = (Bitmap) extras.get("data");
+            this.bitmap = laminiatura;
+            ImageView imgPreview = findViewById(R.id.imgPreview);
+            imgPreview.setImageBitmap(laminiatura);
+            imgPreview.setVisibility(View.VISIBLE);
+        }
     }
 }

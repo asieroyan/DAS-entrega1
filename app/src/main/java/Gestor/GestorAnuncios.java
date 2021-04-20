@@ -3,7 +3,10 @@ package Gestor;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -30,50 +33,18 @@ public class GestorAnuncios {
     }
 
 
-    public boolean anadirAnuncio(Context context, String titulo, String descripcion, String fotourl, String contacto, String email) {
-        // Añade un anuncio a la BD y devuelve el resultado (true si OK y false si ERROR)
-        boolean resultado = false; // Error al acceder a la base de datos
-        GestorBD gestor = new GestorBD(context, "DBUsuarios", null, 1);
-        SQLiteDatabase db = gestor.getWritableDatabase();
-        int codigoMax = 0;
-        if (db != null){
-            // Si se ha podido conectar con la base de datos, insertar los datos en ella
-            resultado = true; // Anuncio añadido
-            String update = "INSERT INTO anuncios(Fotourl, Titulo, Descripcion, Contacto, EmailAnunciante) VALUES(\'" + fotourl + "\',\'" + titulo + "\',\'" + descripcion + "\',\'" + contacto + "\',\'" + email + "\');";
-            gestor.ejecutarUpdate(db, update);
-        }
-        if (db != null){
-            // Obtener el código del anuncio recién introducido
-            try (Cursor cs = gestor.ejecutarConsulta(db, "SELECT Codigo FROM anuncios WHERE EmailAnunciante = \'" + email + "\';")) {
-                while (cs.moveToNext()) {
-                    int codigoAct = cs.getInt(0);
-                    if (codigoAct > codigoMax) {
-                        codigoMax = codigoAct;
-                    }
-                }
-            }
-        }
-        // Cerrar la BD
-        db.close();
-        // Crear el anuncio y añadirlo a la lista de la clase
-        Anuncio anuncio = new Anuncio(codigoMax, fotourl, titulo, descripcion, contacto, email);
-        this.listaAnuncios.add(anuncio);
-        return resultado;
+    public boolean anadirAnuncio(Context context, String titulo, String descripcion, Bitmap foto, String contacto, String email) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        foto.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] fototransformada = stream.toByteArray();
+        String fotoen64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
+
+
+        return true;
     }
 
     public void eliminarAnuncio(Context context, Anuncio anuncio) {
-        // Eliminar el anuncio de la lista local
-        this.listaAnuncios.remove(anuncio);
-        // Eliminar el anuncio de la BD
-        GestorBD gestor = new GestorBD(context, "DBUsuarios", null, 1);
-        SQLiteDatabase db = gestor.getWritableDatabase();
-        String update = "DELETE FROM anuncios WHERE Codigo = \'" +  anuncio.getCodigo() + "\'";
-        if (db != null){
-            // Si se ha podido conectar con la BD, realizar el DELETE
-            gestor.ejecutarUpdate(db, update);
-        }
-        // Cerrar la BD
-        db.close();
+
     }
 
     public ArrayList<Anuncio> getAnuncios () {
@@ -82,33 +53,7 @@ public class GestorAnuncios {
     }
 
     public void cargarAnuncios (Context context){
-        // Recoge todos los anucios de la BD y los añade a la lista local
-        GestorBD gestor = new GestorBD(context, "DBUsuarios", null, 1);
-        SQLiteDatabase db = gestor.getWritableDatabase();
-        if (db != null) {
-            // Si se peude conectar a la BD, ejecutar la consulta
-            try (Cursor cs = gestor.ejecutarConsulta(db, "SELECT * FROM anuncios;")) {
-                // Inicializar la lista local a una lista vacía
-                this.listaAnuncios = new ArrayList<Anuncio>();
 
-                // Recorrer los resultados de la consulta
-                while (cs.moveToNext()) {
-                    // Obtener los campos de la consulta
-                    int codigo = cs.getInt(0);
-                    String fotourl = cs.getString(1);
-                    String titulo = cs.getString(2);
-                    String descripcion = cs.getString(3);
-                    String contacto = cs.getString(4);
-                    String emailAnunciante = cs.getString(5);
-
-                    // Convertir los datos en una instancia de Anuncio y añadirlo a la lista local
-                    Anuncio anuncio = new Anuncio(codigo, fotourl, titulo, descripcion, contacto, emailAnunciante);
-                    this.listaAnuncios.add(anuncio);
-                }
-            }
-        }
-        // Cerrar la BD
-        db.close();
     }
 
     private int getCount() {

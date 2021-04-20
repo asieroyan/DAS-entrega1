@@ -14,10 +14,8 @@
         android:text="TextView"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextTituloAnadirAnuncio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="145dp" />
 
     <EditText
         android:id="@+id/editTextTituloAnadirAnuncio"
@@ -26,10 +24,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/editTextDescripcionAnuncio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTituloAnadirAnuncio" />
+        app:layout_constraintTop_toBottomOf="@+id/textTituloAnadirAnuncio"
+        tools:layout_editor_absoluteX="101dp" />
 
     <EditText
         android:id="@+id/editTextDescripcionAnuncio"
@@ -39,11 +35,9 @@
         android:gravity="start|top"
         android:hint="Descripcion"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/editTextFotourl"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTituloAnadirAnuncio" />
+        app:layout_constraintBottom_toTopOf="@+id/editTextContactoAnuncio"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTituloAnadirAnuncio"
+        tools:layout_editor_absoluteX="65dp" />
 
     <EditText
         android:id="@+id/editTextContactoAnuncio"
@@ -51,23 +45,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarAnuncio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFotourl" />
-
-    <EditText
-        android:id="@+id/editTextFotourl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editTextContactoAnuncio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionAnuncio" />
+        app:layout_constraintBottom_toTopOf="@+id/btnSacarFoto"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescripcionAnuncio"
+        tools:layout_editor_absoluteX="100dp" />
 
     <Button
         android:id="@+id/btnConfirmarAnuncio"
@@ -76,9 +56,32 @@
         android:text="bUTTON"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.806" />
+        app:layout_constraintVertical_bias="0.902" />
+
+    <Button
+        android:id="@+id/btnSacarFoto"
+        android:layout_width="175dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="144dp"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarAnuncio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imgPreview"
+        android:layout_width="319dp"
+        android:layout_height="195dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarAnuncio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextContactoAnuncio"
+        app:layout_constraintVertical_bias="0.424"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
