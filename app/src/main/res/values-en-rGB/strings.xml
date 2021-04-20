@@ -38,4 +38,5 @@
     <string name="hintContrasena">Enter your password</string>
     <string name="textRegistro">Enter register data</string>
     <string name="hintRepiteContrasena">Repeat the password</string>
+    <string name="btnSacarFoto">Take picture</string>
 </resources>

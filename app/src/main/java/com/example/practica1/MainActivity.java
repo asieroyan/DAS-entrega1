@@ -1,8 +1,15 @@
 package com.example.practica1;
 
 import Gestor.GestorUsuarios;
+import Gestor.IniciarSesion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -39,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnIniciarSesion.setText(R.string.btnIniciarSesion);
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
@@ -49,21 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
                 String contrasena = "" + editTextContrasena.getText();
 
+                MainActivity.this.iniciarSesion(email, contrasena);
+
                 // Recibe el código del gestor de usuarios con los datos datos
-                int codigo = GestorUsuarios.getGestorUsuarios().login(MainActivity.this, email, contrasena);
-                if (codigo == 0) {
-                    // Ha ocurrido un error con la BD, se muestra un Toast
-                    Toast.makeText(MainActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
-                } else if (codigo == 1) {
-                    // Las credenciales no son correctas, se muestra un Toast
-                    Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
-                } else {
-                    // El inicio de sesión es correcto, se accede a la actividad Home
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    intent.putExtra("email", email);
-                    startActivity(intent);
-                    finish();
-                }
+
             }
         });
     }
@@ -84,5 +82,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    public void iniciarSesion(String email, String contrasena) {
+        Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(IniciarSesion.class).setInputData(data).build();
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if(workInfo != null && workInfo.getState().isFinished()){
+                            Data outputData = workInfo.getOutputData();
+                            int codigo = outputData.getInt("codigo", 2);
+                            if (codigo == 0) {
+                                // Ha ocurrido un error con la BD, se muestra un Toast
+                                Toast.makeText(MainActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
+                            } else if (codigo == 1) {
+                                // Las credenciales no son correctas, se muestra un Toast
+                                Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
+                            } else {
+                                // El inicio de sesión es correcto, se accede a la actividad Home
+                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                intent.putExtra("email", email);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+        WorkManager.getInstance().enqueue(otwr);
     }
 }

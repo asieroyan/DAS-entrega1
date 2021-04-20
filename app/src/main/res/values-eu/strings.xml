@@ -38,4 +38,5 @@
     <string name="hintContrasena">Sartu zure pasahitza</string>
     <string name="textRegistro">Izena emateko datuak sartu</string>
     <string name="hintRepiteContrasena">Pasahitza errepikatu</string>
+    <string name="btnSacarFoto">Argazkia egin</string>
 </resources>

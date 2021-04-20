@@ -38,4 +38,5 @@
     <string name="hintContrasena">Introduce tu contraseña</string>
     <string name="textRegistro">Introduce los datos de registro</string>
     <string name="hintRepiteContrasena">Repite la contraseña</string>
+    <string name="btnSacarFoto">Sacar foto</string>
 </resources>

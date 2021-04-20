@@ -28,14 +28,15 @@ public class IniciarSesion extends Worker {
         try {
             URL destino = new URL(direccion);
             urlConnection = (HttpURLConnection) destino.openConnection();
-            urlConnection.setConnectTimeout(5000);
-            urlConnection.setReadTimeout(5000);
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(3000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             String email= getInputData().getString("email");
-            String parametros = "email="+email;
+            String contrasena= getInputData().getString("contrasena");
+            String parametros = "email="+email+"&contrasena="+contrasena;
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
@@ -49,7 +50,9 @@ public class IniciarSesion extends Worker {
                 inputStream.close();
                 Data resultados = new Data.Builder()
                         .putString("resultado",result)
+                        .putInt("codigo", 2)
                         .build();
+
                 return Result.success(resultados);
             }
         }
