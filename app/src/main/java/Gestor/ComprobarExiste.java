@@ -3,27 +3,27 @@ package Gestor;
 
 import android.content.Context;
 
-        import androidx.annotation.NonNull;
-        import androidx.work.Data;
-        import androidx.work.Worker;
-        import androidx.work.WorkerParameters;
+import androidx.annotation.NonNull;
+import androidx.work.Data;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
-        import java.io.BufferedInputStream;
-        import java.io.BufferedReader;
-        import java.io.InputStreamReader;
-        import java.io.PrintWriter;
-        import java.net.HttpURLConnection;
-        import java.net.URL;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-public class IniciarSesion extends Worker {
-    public IniciarSesion(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+public class ComprobarExiste extends Worker {
+    public ComprobarExiste(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 
     @NonNull
     @Override
     public Result doWork() {
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_login";
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_comprobarExiste";
         HttpURLConnection urlConnection = null;
         try {
             URL destino = new URL(direccion);
@@ -35,8 +35,7 @@ public class IniciarSesion extends Worker {
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             String email= getInputData().getString("email");
-            String contrasena= getInputData().getString("contrasena");
-            String parametros = "email="+email+"&contrasena="+contrasena;
+            String parametros = "email="+email;
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
@@ -50,7 +49,6 @@ public class IniciarSesion extends Worker {
                 inputStream.close();
                 Data resultados = new Data.Builder()
                         .putString("resultado",result)
-                        .putInt("codigo", 2)
                         .build();
 
                 return Result.success(resultados);

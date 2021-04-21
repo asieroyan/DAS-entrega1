@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private boolean existe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
                 String contrasena = "" + editTextContrasena.getText();
 
-                MainActivity.this.iniciarSesion(email, contrasena);
+                MainActivity.this.existe = false;
+
+                MainActivity.this.comprobarExiste(email, contrasena);
+
+
 
                 // Recibe el código del gestor de usuarios con los datos datos
 
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(IniciarSesion.class).setInputData(data).build();
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -111,6 +117,29 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-        WorkManager.getInstance().enqueue(otwr);
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
+
+    public void comprobarExiste (String email, String contrasena) {
+        Data data = new Data.Builder().putString("email", email).build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(IniciarSesion.class).setInputData(data).build();
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if(workInfo != null && workInfo.getState().isFinished()){
+                            Data outputData = workInfo.getOutputData();
+                            boolean existe = outputData.getBoolean("existe", false);
+                            if (existe) {
+                                MainActivity.this.iniciarSesion(email, contrasena);
+                            } else {
+                                Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 }
