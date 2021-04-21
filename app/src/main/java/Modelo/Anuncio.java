@@ -4,16 +4,16 @@ public class Anuncio {
 
     // Atributos del anuncio
     private int codigo;
-    private String fotourl;
+    private String foto;
     private String titulo;
     private String descripcion;
     private String contacto;
     private String emailAnunciante;
 
     // Constructora del anuncio
-    public Anuncio(int pCodigo, String pFotoUrl, String pTitulo, String pDescripcion, String pContacto, String pEmailAnunciante) {
+    public Anuncio(int pCodigo, String foto, String pTitulo, String pDescripcion, String pContacto, String pEmailAnunciante) {
         this.codigo = pCodigo;
-        this.fotourl = pFotoUrl;
+        this.foto = foto;
         this.titulo = pTitulo;
         this.descripcion = pDescripcion;
         this.contacto = pContacto;
@@ -25,8 +25,8 @@ public class Anuncio {
         return this.codigo;
     }
 
-    public String getFotourl(){
-        return this.fotourl;
+    public String getFoto(){
+        return this.foto;
     }
 
     public String getTitulo(){

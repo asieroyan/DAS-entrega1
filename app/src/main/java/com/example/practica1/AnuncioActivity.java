@@ -15,7 +15,7 @@ public class AnuncioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anuncio);
         // Recibe parámetros de la actividad Home
-        String fotourl = getIntent().getExtras().getString("fotourl");
+        String foto = getIntent().getExtras().getString("foto");
         String titulo = getIntent().getExtras().getString("titulo");
         String descripcion = getIntent().getExtras().getString("descripcion");
         String contacto = getIntent().getExtras().getString("contacto");
@@ -28,7 +28,6 @@ public class AnuncioActivity extends AppCompatActivity {
         textDescripcion.setText(descripcion);
 
         ImageView imageAnuncio = findViewById(R.id.imageAnuncio);
-        new GestorDescargasImagen(imageAnuncio).execute(fotourl);
 
         TextView textTituloContacto = findViewById(R.id.textTituloContacto);
         textTituloContacto.setText(R.string.textTituloContacto);

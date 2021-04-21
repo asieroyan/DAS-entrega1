@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Obtiene los datos del anuncio seleccionado y hace un intent a la actividad Anuncio con ellos
                 Anuncio anuncio = listAnuncios.get(position);
                 Intent intent = new Intent(HomeActivity.this, AnuncioActivity.class);
-                intent.putExtra("fotourl", anuncio.getFotourl());
+                intent.putExtra("foto", anuncio.getFoto());
                 intent.putExtra("titulo", anuncio.getTitulo());
                 intent.putExtra("descripcion", anuncio.getDescripcion());
                 intent.putExtra("contacto", anuncio.getContacto());

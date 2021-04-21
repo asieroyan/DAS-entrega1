@@ -1,5 +1,6 @@
 package com.example.practica1;
 
+import Gestor.ComprobarExiste;
 import Gestor.GestorUsuarios;
 import Gestor.IniciarSesion;
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void comprobarExiste (String email, String contrasena) {
         Data data = new Data.Builder().putString("email", email).build();
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(IniciarSesion.class).setInputData(data).build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ComprobarExiste.class).setInputData(data).build();
 
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {

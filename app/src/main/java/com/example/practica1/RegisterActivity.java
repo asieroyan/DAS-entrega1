@@ -1,6 +1,11 @@
 package com.example.practica1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +18,10 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Gestor.ComprobarExiste;
 import Gestor.GestorUsuarios;
+import Gestor.IniciarSesion;
+import Gestor.Registrarse;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,22 +83,58 @@ public class RegisterActivity extends AppCompatActivity {
                             // Si las contraseñas no son iguales, muestra un Toast
                             Toast.makeText(RegisterActivity.this, R.string.toastContrasenasCoinciden, Toast.LENGTH_SHORT).show();
                         } else {
-                            // Si el formato de los datos es correcto, llama al gestor de anuncios para añadir el usuario y recibe un código de resultado
-                            int codigo = GestorUsuarios.getGestorUsuarios().anadirNuevoUsuario(RegisterActivity.this, email, contrasena);
-                            if (codigo == 0) {
-                                // Ha habido un error al conectarse a la BD y muestra un Toast
-                                Toast.makeText(RegisterActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
-                            } else if (codigo == 1){
-                                // El email proporcionado ya está en la BD y devuelve un Toast
-                                Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
-                            } else {
-                                // Todo es correcto y el usuario se ha añadido a la BD
-                                finish();
-                            }
+                            RegisterActivity.this.comprobarExiste(email, contrasena);
                         }
                     }
                 }
             }
         });
+    }
+
+    public void registrarse(String email, String contrasena) {
+        Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(Registrarse.class).setInputData(data).build();
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            Data outputData = workInfo.getOutputData();
+                            boolean anadido = outputData.getBoolean("anadido", false);
+                            if (anadido) {
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                intent.putExtra("email", email);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
+
+    public void comprobarExiste (String email, String contrasena) {
+        Data data = new Data.Builder().putString("email", email).build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ComprobarExiste.class).setInputData(data).build();
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if(workInfo != null && workInfo.getState().isFinished()){
+                            Data outputData = workInfo.getOutputData();
+                            boolean existe = outputData.getBoolean("existe", false);
+                            if (existe) {
+                                Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                RegisterActivity.this.registrarse(email, contrasena);
+                            }
+
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 }

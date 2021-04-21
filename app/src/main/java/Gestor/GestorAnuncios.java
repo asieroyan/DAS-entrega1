@@ -34,18 +34,14 @@ public class GestorAnuncios {
     }
 
 
-    public boolean anadirAnuncio(Context context, String titulo, String descripcion, Bitmap foto, String contacto, String email) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        foto.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] fototransformada = stream.toByteArray();
-        String fotoen64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
-
-
+    public boolean anadirAnuncio(int codigo, String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
+        Anuncio anuncio = new Anuncio(codigo, foto, titulo, descripcion, contacto, emailAnunciante);
+        this.listaAnuncios.add(anuncio);
         return true;
     }
 
     public void eliminarAnuncio(Context context, Anuncio anuncio) {
-
+        this.listaAnuncios.remove(anuncio);
     }
 
     public ArrayList<Anuncio> getAnuncios () {
@@ -113,7 +109,7 @@ public class GestorAnuncios {
         String[] resultado = new String[this.getCount()];
         int i = 0;
         for (Anuncio anuncio : this.listaAnuncios) {
-            resultado[i] = anuncio.getFotourl();
+            resultado[i] = anuncio.getFoto();
             i++;
         }
         return resultado;

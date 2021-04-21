@@ -3,6 +3,11 @@ package com.example.practica1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,19 +19,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import Gestor.AnadirAnuncio;
 import Gestor.GestorAnuncios;
+import Gestor.IniciarSesion;
 
 // Actividad que representa la pantalla de añadir un nuevo anuncio y su funcionalidad
 public class AnadirAnuncioActivity extends AppCompatActivity {
@@ -76,24 +86,45 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 String titulo = "" + editTextTitulo.getText();
                 String descripcion = "" + editTextDescripcionAnuncio.getText();
                 String contacto = "" + editTextContactoAnuncio.getText();
-                String email = getIntent().getExtras().getString("email");
+                String emailAnunciante = getIntent().getExtras().getString("email");
+
+                // encode Bitmap to String
                 Bitmap bitmapAct = AnadirAnuncioActivity.this.bitmap;
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmapAct.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] fototransformada = stream.toByteArray();
+                String fotoen64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
 
-                // Llamar al gestor de anuncios para añadirlo a la base de datos y devuelve un true si todo ha ido bien
-                boolean ok = GestorAnuncios.getGestorAnuncios().anadirAnuncio(AnadirAnuncioActivity.this, titulo, descripcion, bitmapAct, contacto, email);
+                AnadirAnuncioActivity.this.anadirAnuncio(titulo, descripcion, fotoen64, contacto, emailAnunciante);
 
-                //Ejecutar distintas notificaciones dependiendo del resultado
-                if (ok) {
-                    notificarAnadirAnuncio();
-                } else {
-                    notificarError();
-                }
-                // Intent a HomeActivity para que se actualice si hay cambios
-                Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
+    }
+
+    public void anadirAnuncio(String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
+        Data data = new Data.Builder().putString("titulo", titulo).putString("descripcion", descripcion).putString("foto", foto).putString("contacto", contacto).putString("emailAnunciante", emailAnunciante).build();
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(AnadirAnuncio.class).setInputData(data).build();
+
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if(workInfo != null && workInfo.getState().isFinished()){
+                            Data outputData = workInfo.getOutputData();
+                            int codigoMax = outputData.getInt("codigoMax", 2);
+                            // Llamar al gestor de anuncios para añadirlo a la base de datos y devuelve un true si todo ha ido bien
+                            GestorAnuncios.getGestorAnuncios().anadirAnuncio(codigoMax, titulo, descripcion, foto, contacto, emailAnunciante);
+
+                            AnadirAnuncioActivity.this.notificarAnadirAnuncio();
+
+                            // Intent a HomeActivity para que se actualice si hay cambios
+                            Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 
     @Override
