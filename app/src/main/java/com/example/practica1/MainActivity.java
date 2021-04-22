@@ -145,11 +145,12 @@ public class MainActivity extends AppCompatActivity {
                         if(workInfo != null && workInfo.getState().isFinished()){
                             Data outputData = workInfo.getOutputData();
                             String resultado = outputData.getString("resultado");
-                            System.out.println(resultado);
                             JSONParser parser = new JSONParser();
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
                                 System.out.println(json);
+                                boolean existe = (boolean) json.get("existe");
+                                System.out.println(existe);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

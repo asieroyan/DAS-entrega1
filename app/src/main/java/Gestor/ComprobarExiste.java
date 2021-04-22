@@ -47,7 +47,6 @@ public class ComprobarExiste extends Worker {
                     result += line;
                 }
                 inputStream.close();
-                System.out.println(result);
                 Data resultados = new Data.Builder()
                         .putString("resultado",result)
                         .build();
