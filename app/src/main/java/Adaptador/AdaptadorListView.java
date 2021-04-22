@@ -3,6 +3,7 @@ package Adaptador;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.practica1.R;
-
-import java.io.IOException;
-import java.net.URL;
-
-import Gestor.GestorDescargasImagen;
 
 public class AdaptadorListView extends BaseAdapter {
     //Clase para hacer un adaptador de ListView personalizado
@@ -26,15 +22,15 @@ public class AdaptadorListView extends BaseAdapter {
     private LayoutInflater inflater;
     private String[] titulos;
     private String[] descripciones;
-    private String[] fotosUrl;
+    private String[] fotos;
     private String[] contactos;
 
     // Constructora de la clase
-    public AdaptadorListView(Context pcontext, String[] pTitulos, String[] pDescripciones, String[] pFotosUrl, String[] pContactos) {
+    public AdaptadorListView(Context pcontext, String[] pTitulos, String[] pDescripciones, String[] pFotos, String[] pContactos) {
         contexto = pcontext;
         titulos = pTitulos;
         descripciones = pDescripciones;
-        fotosUrl = pFotosUrl;
+        fotos = pFotos;
         contactos = pContactos;
         inflater = (LayoutInflater) contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -66,7 +62,9 @@ public class AdaptadorListView extends BaseAdapter {
         TextView nombre= (TextView) view.findViewById(R.id.textFilaListaTitulo);
         nombre.setText(titulos[position]);
         ImageView img=(ImageView) view.findViewById(R.id.fotoUrlLista);
-        new GestorDescargasImagen(img).execute(fotosUrl[position]);
+        byte[] decodedString = Base64.decode(fotos[position], Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        img.setImageBitmap(decodedByte);
         return view;
     }
 }

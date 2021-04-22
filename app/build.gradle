@@ -43,6 +43,9 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.work:work-runtime:2.0.1-rc01'
     implementation fileTree(dir: 'C:\\Users\\asier\\Downloads\\mysql-connector-java-8.0.23\\mysql-connector-java-8.0.23', include: ['*.aar', '*.jar'], exclude: [])
+    implementation ('com.googlecode.json-simple:json-simple:1.1.1')
+            { exclude group: 'junit', module: 'junit'}
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

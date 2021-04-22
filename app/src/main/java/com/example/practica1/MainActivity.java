@@ -1,7 +1,6 @@
 package com.example.practica1;
 
 import Gestor.ComprobarExiste;
-import Gestor.GestorUsuarios;
 import Gestor.IniciarSesion;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -95,12 +98,22 @@ public class MainActivity extends AppCompatActivity {
         Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(IniciarSesion.class).setInputData(data).build();
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null && workInfo.getState().isFinished()){
                             Data outputData = workInfo.getOutputData();
+                            String resultado = outputData.getString("resultado");
+                            System.out.println(resultado);
+                            JSONParser parser = new JSONParser();
+                            try {
+                                JSONObject json = (JSONObject) parser.parse(resultado);
+                                System.out.println(json);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
                             int codigo = outputData.getInt("codigo", 2);
                             if (codigo == 0) {
                                 // Ha ocurrido un error con la BD, se muestra un Toast
@@ -118,19 +131,28 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-        WorkManager.getInstance(this).enqueue(otwr);
+        WorkManager.getInstance().enqueue(otwr);
     }
 
     public void comprobarExiste (String email, String contrasena) {
         Data data = new Data.Builder().putString("email", email).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ComprobarExiste.class).setInputData(data).build();
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null && workInfo.getState().isFinished()){
                             Data outputData = workInfo.getOutputData();
+                            String resultado = outputData.getString("resultado");
+                            System.out.println(resultado);
+                            JSONParser parser = new JSONParser();
+                            try {
+                                JSONObject json = (JSONObject) parser.parse(resultado);
+                                System.out.println(json);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             boolean existe = outputData.getBoolean("existe", false);
                             if (existe) {
                                 MainActivity.this.iniciarSesion(email, contrasena);
@@ -141,6 +163,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-        WorkManager.getInstance(this).enqueue(otwr);
+        WorkManager.getInstance().enqueue(otwr);
     }
 }

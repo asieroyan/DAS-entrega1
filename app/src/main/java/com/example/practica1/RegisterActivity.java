@@ -7,7 +7,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Gestor.ComprobarExiste;
-import Gestor.GestorUsuarios;
-import Gestor.IniciarSesion;
 import Gestor.Registrarse;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -95,46 +96,57 @@ public class RegisterActivity extends AppCompatActivity {
         Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(Registrarse.class).setInputData(data).build();
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if (workInfo != null && workInfo.getState().isFinished()) {
                             Data outputData = workInfo.getOutputData();
-                            boolean anadido = outputData.getBoolean("anadido", false);
-                            if (anadido) {
-                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                intent.putExtra("email", email);
-                                startActivity(intent);
-                                finish();
+                            String resultado = outputData.getString("resultado");
+                            System.out.println(resultado);
+                            JSONParser parser = new JSONParser();
+                            try {
+                                JSONObject json = (JSONObject) parser.parse(resultado);
+                                System.out.println(json);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
                 });
-        WorkManager.getInstance(this).enqueue(otwr);
+        WorkManager.getInstance().enqueue(otwr);
     }
 
     public void comprobarExiste (String email, String contrasena) {
         Data data = new Data.Builder().putString("email", email).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ComprobarExiste.class).setInputData(data).build();
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null && workInfo.getState().isFinished()){
                             Data outputData = workInfo.getOutputData();
-                            boolean existe = outputData.getBoolean("existe", false);
+                            String resultado = outputData.getString("resultado");
+                            System.out.println(resultado);
+                            JSONParser parser = new JSONParser();
+                            try {
+                                JSONObject json = (JSONObject) parser.parse(resultado);
+                                System.out.println(json);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                           /*JSONParser
+
                             if (existe) {
                                 Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
                             } else {
-
                                 RegisterActivity.this.registrarse(email, contrasena);
-                            }
+                            }*/
 
                         }
                     }
                 });
-        WorkManager.getInstance(this).enqueue(otwr);
+        WorkManager.getInstance().enqueue(otwr);
     }
 }

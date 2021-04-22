@@ -2,11 +2,12 @@ package com.example.practica1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import Gestor.GestorDescargasImagen;
 
 public class AnuncioActivity extends AppCompatActivity {
 
@@ -28,6 +29,9 @@ public class AnuncioActivity extends AppCompatActivity {
         textDescripcion.setText(descripcion);
 
         ImageView imageAnuncio = findViewById(R.id.imageAnuncio);
+        byte[] decodedString = Base64.decode(foto, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imageAnuncio.setImageBitmap(decodedByte);
 
         TextView textTituloContacto = findViewById(R.id.textTituloContacto);
         textTituloContacto.setText(R.string.textTituloContacto);

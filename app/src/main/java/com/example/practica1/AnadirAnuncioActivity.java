@@ -105,7 +105,7 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
         Data data = new Data.Builder().putString("titulo", titulo).putString("descripcion", descripcion).putString("foto", foto).putString("contacto", contacto).putString("emailAnunciante", emailAnunciante).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(AnadirAnuncio.class).setInputData(data).build();
 
-        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -124,7 +124,7 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                         }
                     }
                 });
-        WorkManager.getInstance(this).enqueue(otwr);
+        WorkManager.getInstance().enqueue(otwr);
     }
 
     @Override
