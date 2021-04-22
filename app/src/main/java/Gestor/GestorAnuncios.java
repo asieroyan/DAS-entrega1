@@ -5,9 +5,27 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.StrictMode;
 import android.util.Base64;
 
+import androidx.work.Data;
+import androidx.work.ListenableWorker;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -33,11 +51,51 @@ public class GestorAnuncios {
         return mGestorAnuncios;
     }
 
+    public boolean anadirAnuncio(String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
+        int codigoMax = 0;
 
-    public boolean anadirAnuncio(int codigo, String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
-        Anuncio anuncio = new Anuncio(codigo, foto, titulo, descripcion, contacto, emailAnunciante);
-        this.listaAnuncios.add(anuncio);
-        return true;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_anadirAnuncio.php";
+        HttpURLConnection urlConnection = null;
+        try {
+            URL destino = new URL(direccion);
+            urlConnection = (HttpURLConnection) destino.openConnection();
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(3000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+            String parametros = "foto=" + foto + "&titulo=" + titulo + "&descripcion=" + descripcion + "&contacto=" + contacto + "&emailAnunciante=" + emailAnunciante;
+            out.print(parametros);
+            out.close();
+            int statusCode = urlConnection.getResponseCode();
+            if (statusCode == 200) {
+                BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                String line, result = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+
+                inputStream.close();
+                JSONParser parser = new JSONParser();
+                try {
+                    JSONObject json = (JSONObject) parser.parse(result);
+                    codigoMax = ((Long) json.get("codigoMax")).intValue();
+                    Anuncio anuncio = new Anuncio(codigoMax, foto, titulo, descripcion, contacto, emailAnunciante);
+                    this.listaAnuncios.add(anuncio);
+                    return true;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void eliminarAnuncio(Context context, Anuncio anuncio) {

@@ -27,6 +27,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -95,36 +99,21 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 byte[] fototransformada = stream.toByteArray();
                 String fotoen64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
 
-                AnadirAnuncioActivity.this.anadirAnuncio(titulo, descripcion, fotoen64, contacto, emailAnunciante);
+                boolean anadido = GestorAnuncios.getGestorAnuncios().anadirAnuncio(titulo, descripcion, fotoen64, contacto, emailAnunciante);
 
+                if (anadido) {
+                    // Notificar de que el anuncio se ha añadido correctamente
+                    AnadirAnuncioActivity.this.notificarAnadirAnuncio();
+
+                    // Intent a HomeActivity para que se actualice si hay cambios
+                    Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    AnadirAnuncioActivity.this.notificarError();
+                }
             }
         });
-    }
-
-    public void anadirAnuncio(String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
-        Data data = new Data.Builder().putString("titulo", titulo).putString("descripcion", descripcion).putString("foto", foto).putString("contacto", contacto).putString("emailAnunciante", emailAnunciante).build();
-        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(AnadirAnuncio.class).setInputData(data).build();
-
-        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
-                .observe(this, new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        if(workInfo != null && workInfo.getState().isFinished()){
-                            Data outputData = workInfo.getOutputData();
-                            int codigoMax = outputData.getInt("codigoMax", 2);
-                            // Llamar al gestor de anuncios para añadirlo a la base de datos y devuelve un true si todo ha ido bien
-                            GestorAnuncios.getGestorAnuncios().anadirAnuncio(codigoMax, titulo, descripcion, foto, contacto, emailAnunciante);
-
-                            AnadirAnuncioActivity.this.notificarAnadirAnuncio();
-
-                            // Intent a HomeActivity para que se actualice si hay cambios
-                            Intent intent = new Intent(AnadirAnuncioActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                });
-        WorkManager.getInstance().enqueue(otwr);
     }
 
     @Override
