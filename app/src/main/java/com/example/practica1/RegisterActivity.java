@@ -103,11 +103,17 @@ public class RegisterActivity extends AppCompatActivity {
                         if (workInfo != null && workInfo.getState().isFinished()) {
                             Data outputData = workInfo.getOutputData();
                             String resultado = outputData.getString("resultado");
-                            System.out.println(resultado);
                             JSONParser parser = new JSONParser();
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
-                                System.out.println(json);
+                                boolean anadido = (boolean) json.get("anadido");
+                                if (anadido) {
+                                    // registrar al usuario
+                                    finish();
+                                } else {
+                                    // Toast de error porque ya existe el usuario
+                                    Toast.makeText(RegisterActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
+                                }
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -128,22 +134,20 @@ public class RegisterActivity extends AppCompatActivity {
                         if(workInfo != null && workInfo.getState().isFinished()){
                             Data outputData = workInfo.getOutputData();
                             String resultado = outputData.getString("resultado");
-                            System.out.println(resultado);
                             JSONParser parser = new JSONParser();
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
-                                System.out.println(json);
+                                boolean existe = (boolean) json.get("existe");
+                                if (!existe) {
+                                    // registrar al usuario
+                                    RegisterActivity.this.registrarse(email, contrasena);
+                                } else {
+                                    // Toast de error porque ya existe el usuario
+                                    Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
+                                }
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                           /*JSONParser
-
-                            if (existe) {
-                                Toast.makeText(RegisterActivity.this, R.string.toastUsuarioExiste, Toast.LENGTH_SHORT).show();
-                            } else {
-                                RegisterActivity.this.registrarse(email, contrasena);
-                            }*/
-
                         }
                     }
                 });

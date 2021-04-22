@@ -50,7 +50,6 @@ public class IniciarSesion extends Worker {
                 inputStream.close();
                 Data resultados = new Data.Builder()
                         .putString("resultado",result)
-                        .putInt("codigo", 2)
                         .build();
 
                 return Result.success(resultados);

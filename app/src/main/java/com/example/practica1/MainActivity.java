@@ -105,28 +105,24 @@ public class MainActivity extends AppCompatActivity {
                         if(workInfo != null && workInfo.getState().isFinished()){
                             Data outputData = workInfo.getOutputData();
                             String resultado = outputData.getString("resultado");
-                            System.out.println(resultado);
                             JSONParser parser = new JSONParser();
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
-                                System.out.println(json);
+                                boolean exito = (boolean) json.get("exito");
+
+                                if(exito) {
+                                    // El inicio de sesión es correcto, se accede a la actividad Home
+                                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                    intent.putExtra("email", email);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    // Las credenciales no son correctas, se muestra un Toast
+                                    Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
+                                }
+
                             } catch (ParseException e) {
                                 e.printStackTrace();
-                            }
-
-                            int codigo = outputData.getInt("codigo", 2);
-                            if (codigo == 0) {
-                                // Ha ocurrido un error con la BD, se muestra un Toast
-                                Toast.makeText(MainActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
-                            } else if (codigo == 1) {
-                                // Las credenciales no son correctas, se muestra un Toast
-                                Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
-                            } else {
-                                // El inicio de sesión es correcto, se accede a la actividad Home
-                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                intent.putExtra("email", email);
-                                startActivity(intent);
-                                finish();
                             }
                         }
                     }
@@ -148,18 +144,17 @@ public class MainActivity extends AppCompatActivity {
                             JSONParser parser = new JSONParser();
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
-                                System.out.println(json);
                                 boolean existe = (boolean) json.get("existe");
-                                System.out.println(existe);
+                                if (existe) {
+                                    MainActivity.this.iniciarSesion(email, contrasena);
+                                } else {
+                                    // Toast de error porque no existe el usuario
+                                    Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
+                                }
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            boolean existe = outputData.getBoolean("existe", false);
-                            if (existe) {
-                                MainActivity.this.iniciarSesion(email, contrasena);
-                            } else {
-                                Toast.makeText(MainActivity.this, R.string.toastErrorCredenciales, Toast.LENGTH_SHORT).show();
-                            }
+
 
                         }
                     }
