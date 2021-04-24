@@ -1,6 +1,11 @@
 package com.example.practica1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,11 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 
 import Adaptador.AdaptadorListView;
 import Gestor.GestorAnuncios;
+import Gestor.Registrarse;
 import Modelo.Anuncio;
 
 public class HomeActivity extends AppCompatActivity {
@@ -70,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Ejecución al mantener pulsado un elemento (eliminar anuncio).
                 // Obtiene el anuncio concreto
                 Anuncio anuncio = listAnuncios.get(position);
-
+                System.out.println(email);
                 // Comprobar si el usuario actual es admin o ha creado este anuncio para permitir borrarlo
                 if (email.equals(anuncio.getEmailAnunciante()) || email.equals("as@as.as")) {
 
@@ -78,11 +89,41 @@ public class HomeActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                     builder.setMessage(R.string.textEliminarAnuncio).setPositiveButton(R.string.textSi, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // Si se confirma, llamar al gestor de anuncios para eliminar el anuncio actual y relanzar la actividad para actualizar los datos
-                            GestorAnuncios.getGestorAnuncios().eliminarAnuncio(HomeActivity.this, anuncio);
-                            Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
+
+                            Data data = new Data.Builder().putInt("codigo", anuncio.getCodigo()).build();
+                            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(Registrarse.class).setInputData(data).build();
+
+                            WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+                                    .observe(HomeActivity.this, new Observer<WorkInfo>() {
+                                        @Override
+                                        public void onChanged(WorkInfo workInfo) {
+                                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                                Data outputData = workInfo.getOutputData();
+                                                String resultado = outputData.getString("resultado");
+                                                // Si se confirma, llamar al gestor de anuncios para eliminar el anuncio actual y relanzar la actividad para actualizar los datos
+                                                GestorAnuncios.getGestorAnuncios().eliminarAnuncio(HomeActivity.this, anuncio);
+                                                Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                                /*JSONParser parser = new JSONParser();
+                                                try {
+                                                    JSONObject json = (JSONObject) parser.parse(resultado);
+                                                    boolean anadido = (boolean) json.get("anadido");
+                                                    if (anadido) {
+                                                        // registrar al usuario
+                                                        finish();
+                                                    } else {
+                                                        // Toast de error porque ya existe el usuario
+                                                        Toast.makeText(RegisterActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }*/
+                                            }
+                                        }
+                                    });
+                            WorkManager.getInstance().enqueue(otwr);
+
                         }
                     }).setNegativeButton(R.string.textNo, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

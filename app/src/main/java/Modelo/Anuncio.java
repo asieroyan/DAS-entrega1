@@ -11,9 +11,9 @@ public class Anuncio {
     private String emailAnunciante;
 
     // Constructora del anuncio
-    public Anuncio(int pCodigo, String foto, String pTitulo, String pDescripcion, String pContacto, String pEmailAnunciante) {
+    public Anuncio(int pCodigo, String pFoto, String pTitulo, String pDescripcion, String pContacto, String pEmailAnunciante) {
         this.codigo = pCodigo;
-        this.foto = foto;
+        this.foto = pFoto;
         this.titulo = pTitulo;
         this.descripcion = pDescripcion;
         this.contacto = pContacto;

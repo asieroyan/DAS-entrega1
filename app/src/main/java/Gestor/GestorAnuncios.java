@@ -2,15 +2,9 @@
 package Gestor;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.os.StrictMode;
-import android.util.Base64;
 
-import androidx.work.Data;
-import androidx.work.ListenableWorker;
-
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -54,6 +49,7 @@ public class GestorAnuncios {
     public boolean anadirAnuncio(String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
         int codigoMax = 0;
 
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -81,6 +77,7 @@ public class GestorAnuncios {
                 }
 
                 inputStream.close();
+                System.out.println(result);
                 JSONParser parser = new JSONParser();
                 try {
                     JSONObject json = (JSONObject) parser.parse(result);
@@ -108,7 +105,57 @@ public class GestorAnuncios {
     }
 
     public void cargarAnuncios (Context context){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
+        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_cargarAnuncios.php";
+        HttpURLConnection urlConnection = null;
+        try {
+            URL destino = new URL(direccion);
+            urlConnection = (HttpURLConnection) destino.openConnection();
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(3000);
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+            out.close();
+            int statusCode = urlConnection.getResponseCode();
+            if (statusCode == 200) {
+                BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                String line, result = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+
+                inputStream.close();
+                JSONParser parser = new JSONParser();
+                try {
+                    JSONArray jsonArray = (JSONArray) parser.parse(result);
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        JSONObject json = (JSONObject) jsonArray.get(i);
+                        String codigoStr = (String) json.get("codigo");
+                        String emailAnunciante = (String) json.get("emailAnunciante");
+                        String titulo = (String) json.get("titulo");
+                        String descripcion = (String) json.get("descripcion");
+                        String contacto = (String) json.get("contacto");
+                        String fotoAux = (String) json.get("foto");
+                        String foto = fotoAux.replace(" ", "+");
+                        int codigo = Integer.parseInt(codigoStr);
+                        System.out.println(foto);
+
+                        Anuncio anuncio = new Anuncio(codigo, foto, titulo, descripcion, contacto, emailAnunciante);
+
+                        this.listaAnuncios.add(anuncio);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private int getCount() {
