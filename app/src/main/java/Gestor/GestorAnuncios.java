@@ -68,6 +68,7 @@ public class GestorAnuncios {
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
+            System.out.println(statusCode);
             if (statusCode == 200) {
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -77,17 +78,7 @@ public class GestorAnuncios {
                 }
 
                 inputStream.close();
-                System.out.println(result);
-                JSONParser parser = new JSONParser();
-                try {
-                    JSONObject json = (JSONObject) parser.parse(result);
-                    codigoMax = ((Long) json.get("codigoMax")).intValue();
-                    Anuncio anuncio = new Anuncio(codigoMax, foto, titulo, descripcion, contacto, emailAnunciante);
-                    this.listaAnuncios.add(anuncio);
-                    return true;
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,6 +96,9 @@ public class GestorAnuncios {
     }
 
     public void cargarAnuncios (Context context){
+
+        this.listaAnuncios = new ArrayList<>();
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -143,7 +137,6 @@ public class GestorAnuncios {
                         String fotoAux = (String) json.get("foto");
                         String foto = fotoAux.replace(" ", "+");
                         int codigo = Integer.parseInt(codigoStr);
-                        System.out.println(foto);
 
                         Anuncio anuncio = new Anuncio(codigo, foto, titulo, descripcion, contacto, emailAnunciante);
 
