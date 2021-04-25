@@ -53,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        // Botón para iniciar sesión
         Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnIniciarSesion.setText(R.string.btnIniciarSesion);
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
@@ -67,11 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
                 MainActivity.this.existe = false;
 
+                // LLama al primer método para comprobar si existe el email
                 MainActivity.this.comprobarExiste(email, contrasena);
-
-
-
-                // Recibe el código del gestor de usuarios con los datos datos
 
             }
         });
@@ -96,21 +92,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void iniciarSesion(String email, String contrasena) {
+        // Petición http para iniciar sesión
         Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(IniciarSesion.class).setInputData(data).build();
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null && workInfo.getState().isFinished()){
+                            // Parsear el resultado
                             Data outputData = workInfo.getOutputData();
                             String resultado = outputData.getString("resultado");
                             JSONParser parser = new JSONParser();
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
                                 boolean exito = (boolean) json.get("exito");
-
+                                // Si las credenciales son correctas, entra en la app, si no muestra un toast
                                 if(exito) {
                                     GestorSesion.getGestorSesion().setEmail(email);
                                     // El inicio de sesión es correcto, se accede a la actividad Home
@@ -128,14 +126,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-        WorkManager.getInstance().enqueue(otwr);
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 
     public void comprobarExiste (String email, String contrasena) {
+        // Petición http para comprobar si el usuario ya existe
         Data data = new Data.Builder().putString("email", email).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ComprobarExiste.class).setInputData(data).build();
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -144,8 +143,10 @@ public class MainActivity extends AppCompatActivity {
                             String resultado = outputData.getString("resultado");
                             JSONParser parser = new JSONParser();
                             try {
+                                // Parsea el resultado
                                 JSONObject json = (JSONObject) parser.parse(resultado);
                                 boolean existe = (boolean) json.get("existe");
+                                // Si el usuario existe, llama al método de iniciar sesión
                                 if (existe) {
                                     MainActivity.this.iniciarSesion(email, contrasena);
                                 } else {
@@ -160,6 +161,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-        WorkManager.getInstance().enqueue(otwr);
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 }

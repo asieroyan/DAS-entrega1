@@ -22,6 +22,7 @@ public class EliminarAnuncio extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        // Petición http
         String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_eliminarAnuncio.php";
         HttpURLConnection urlConnection = null;
         try {
@@ -33,12 +34,14 @@ public class EliminarAnuncio extends Worker {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+            // Añadir parámetros a la petición
             int codigo = getInputData().getInt("codigo", 1);
             String parametros = "codigo="+codigo;
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
             if (statusCode == 200) {
+                // Parsea y devuelve el resultado
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line, result = "";

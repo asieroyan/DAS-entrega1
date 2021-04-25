@@ -91,7 +91,7 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 String contacto = "" + editTextContactoAnuncio.getText();
                 String emailAnunciante = GestorSesion.getGestorSesion().getEmail();
 
-                // encode Bitmap to String
+                // Codificar el BitMap a String base 64
                 Bitmap bitmapAct = AnadirAnuncioActivity.this.bitmap;
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmapAct.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -163,17 +163,21 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
         // Ejecutar la notificación
         elManager.notify(1, elBuilder.build());
     }
+    // Método para colocar la imagen sacada con la app externa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 14 && resultCode == RESULT_OK) {
             Button btnSacarFoto =  findViewById(R.id.btnSacarFoto);
+            // Esconder el botón
             btnSacarFoto.setVisibility(View.INVISIBLE);
             Bundle extras = data.getExtras();
             Bitmap laminiatura = (Bitmap) extras.get("data");
             this.bitmap = laminiatura;
+            // Añadir el BitMap al imageView
             ImageView imgPreview = findViewById(R.id.imgPreview);
             imgPreview.setImageBitmap(laminiatura);
+            // Mostrar la iamgen
             imgPreview.setVisibility(View.VISIBLE);
         }
     }

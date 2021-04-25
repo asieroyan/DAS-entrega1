@@ -16,12 +16,14 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String s) {
+        // Obtiene el token del dispositivo en el que se ha instalado la app
         super.onNewToken(s);
         System.out.println(s);
         GestorDispositivos.getGestorDispositivos().anadirToken(s);
     }
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        // Método vacío (sólo recibe una notificación si la app está cerrada
         if (remoteMessage.getData().size() > 0) {
 
         }

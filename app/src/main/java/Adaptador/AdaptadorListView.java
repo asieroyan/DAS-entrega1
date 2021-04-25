@@ -62,6 +62,8 @@ public class AdaptadorListView extends BaseAdapter {
         TextView nombre= (TextView) view.findViewById(R.id.textFilaListaTitulo);
         nombre.setText(titulos[position]);
         ImageView img=(ImageView) view.findViewById(R.id.fotoUrlLista);
+
+        //Decodificar la imagen de base 64 a BitMap y ponerla en el imageView
         byte[] decodedString = Base64.decode(fotos[position], Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         img.setImageBitmap(decodedByte);

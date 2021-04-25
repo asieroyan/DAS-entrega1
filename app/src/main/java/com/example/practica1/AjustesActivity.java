@@ -28,6 +28,7 @@ public class AjustesActivity extends AppCompatActivity {
         TextView textIdiomas = findViewById(R.id.textIdiomas);
         textIdiomas.setText(R.string.settingsIdioma);
 
+        // Botón para cambiar de idioma al español
         Button btnEspanol = findViewById(R.id.btnEspanol);
         btnEspanol.setText(R.string.español);
         btnEspanol.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +41,7 @@ public class AjustesActivity extends AppCompatActivity {
             }
         });
 
+        // Botón para cambiar de idioma al euskera
         Button btnEuskera = findViewById(R.id.btnEuskera);
         btnEuskera.setText(R.string.euskera);
         btnEuskera.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +54,7 @@ public class AjustesActivity extends AppCompatActivity {
             }
         });
 
+        // Botón para cambiar de idioma al inglés
         Button btnEnglish = findViewById(R.id.btnEnglish);
         btnEnglish.setText(R.string.english);
         btnEnglish.setOnClickListener(new View.OnClickListener() {
@@ -63,13 +66,16 @@ public class AjustesActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
+
+
     protected void onRestoreInstanceState(Bundle savedInstanceState){ //Si cambio a horizontal
         super.onRestoreInstanceState(savedInstanceState);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         cambiarIdioma(prefs.getString("idiomaApp","DEF"));
     }
+
+    // Método para cambiar el idioma pasado un parámetro
     private void cambiarIdioma(String idioma){
         Locale nuevaloc= new Locale("es"); //Por defecto español
         if (idioma.equals("ENG")){ //Si el idioma es ingles

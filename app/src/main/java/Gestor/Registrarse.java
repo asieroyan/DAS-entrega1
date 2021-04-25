@@ -22,6 +22,7 @@ public class Registrarse extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        // Petición http
         String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_registro.php";
         HttpURLConnection urlConnection = null;
         try {
@@ -33,6 +34,7 @@ public class Registrarse extends Worker {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+            // Añadir parámetros a la petición
             String email= getInputData().getString("email");
             String contrasena= getInputData().getString("contrasena");
             String parametros = "email="+email+"&contrasena="+contrasena;
@@ -40,6 +42,7 @@ public class Registrarse extends Worker {
             out.close();
             int statusCode = urlConnection.getResponseCode();
             if (statusCode == 200) {
+                // Parsea y devuelve el resultado
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line, result = "";

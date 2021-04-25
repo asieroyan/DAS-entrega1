@@ -93,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void registrarse(String email, String contrasena) {
+        // Petición http para registrar al usuario
         Data data = new Data.Builder().putString("email", email).putString("contrasena", contrasena).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(Registrarse.class).setInputData(data).build();
 
@@ -107,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
                                 boolean anadido = (boolean) json.get("anadido");
+                                // Si ha sido correctamente añadido, volver al login y si no avisa con un toast de error
                                 if (anadido) {
                                     // registrar al usuario
                                     finish();
@@ -124,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void comprobarExiste (String email, String contrasena) {
+        // Comprueba que ese usuario no existe
         Data data = new Data.Builder().putString("email", email).build();
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(ComprobarExiste.class).setInputData(data).build();
 
@@ -138,6 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                             try {
                                 JSONObject json = (JSONObject) parser.parse(resultado);
                                 boolean existe = (boolean) json.get("existe");
+                                // Si no existe el usuario, lo registra, si existe, avisa mediante un toast
                                 if (!existe) {
                                     // registrar al usuario
                                     RegisterActivity.this.registrarse(email, contrasena);

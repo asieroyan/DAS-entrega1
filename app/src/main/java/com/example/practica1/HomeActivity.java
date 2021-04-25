@@ -102,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
                                         @Override
                                         public void onChanged(WorkInfo workInfo) {
                                             if(workInfo != null && workInfo.getState().isFinished()){
+                                                // Parsear el resultado de la petición
                                                 Data outputData = workInfo.getOutputData();
                                                 String resultado = outputData.getString("resultado");
                                                 System.out.println(resultado);
@@ -109,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
                                                 try {
                                                     JSONObject json = (JSONObject) parser.parse(resultado);
                                                     boolean existe = (boolean) json.get("existe");
+                                                    // Si ya no existe el anuncio, se confirma que se ha borrado bien y se elimina en local, además de recargar la lista
                                                     if (!existe) {
                                                         GestorAnuncios.getGestorAnuncios().eliminarAnuncio(HomeActivity.this, anuncio);
                                                         Intent intent = new Intent(HomeActivity.this, HomeActivity.class);

@@ -50,6 +50,7 @@ public class GestorAnuncios {
     }
 
     public boolean anadirAnuncio(String titulo, String descripcion, String foto, String contacto, String emailAnunciante) {
+        // Forzar la ejecución en primer plano
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -64,12 +65,14 @@ public class GestorAnuncios {
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
+            // Añadir parámetros a la petición
             String parametros = "foto=" + foto + "&titulo=" + titulo + "&descripcion=" + descripcion + "&contacto=" + contacto + "&emailAnunciante=" + emailAnunciante;
             out.print(parametros);
             out.close();
             int statusCode = urlConnection.getResponseCode();
             System.out.println(statusCode);
             if (statusCode == 200) {
+                // Parsea y devuelve el resultado
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line, result = "";
@@ -99,10 +102,10 @@ public class GestorAnuncios {
     public ArrayList<Anuncio> cargarAnuncios (Context context){
 
         this.listaAnuncios = new ArrayList<>();
-
+        // Forzar la ejecución en primer plano
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        // Petición http
         String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_cargarAnuncios.php";
         HttpURLConnection urlConnection = null;
         try {
@@ -117,18 +120,22 @@ public class GestorAnuncios {
             out.close();
             int statusCode = urlConnection.getResponseCode();
             if (statusCode == 200) {
+                // Parsea y devuelve el resultado
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line, result = "";
                 while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
-
                 inputStream.close();
+
+                // Parsear la respuesta del servidor php
                 JSONParser parser = new JSONParser();
                 try {
+                    // Obtener el array de anuncios
                     JSONArray jsonArray = (JSONArray) parser.parse(result);
                     for (int i = 0; i < jsonArray.size(); i++) {
+                        // Por cada entrada, obtiene los datos y crea un anuncio, añadiéndolo a la lista local
                         JSONObject json = (JSONObject) jsonArray.get(i);
                         String codigoStr = (String) json.get("codigo");
                         String emailAnunciante = (String) json.get("emailAnunciante");

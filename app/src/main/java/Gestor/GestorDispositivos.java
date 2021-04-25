@@ -30,9 +30,11 @@ public class GestorDispositivos {
     }
 
     public void anadirToken (String token) {
+        // Forzar la ejecución en primer plano
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        // Petición http
         String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_anadirToken.php";
         HttpURLConnection urlConnection = null;
         try {
