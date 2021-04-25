@@ -58,8 +58,6 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
         imgPreview.setVisibility(View.INVISIBLE);
 
         // Configuración de los cuadros de texto y de input
-        TextView textTituloAnadirAnuncio = findViewById(R.id.textTituloAnadirAnuncio);
-        textTituloAnadirAnuncio.setText(R.string.textTituloAnadirAnuncio);
 
         EditText editTextTitulo = findViewById(R.id.editTextTituloAnadirAnuncio);
         editTextTitulo.setHint(R.string.hintTituloAnuncio);
@@ -169,6 +167,8 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 14 && resultCode == RESULT_OK) {
+            Button btnSacarFoto =  findViewById(R.id.btnSacarFoto);
+            btnSacarFoto.setVisibility(View.INVISIBLE);
             Bundle extras = data.getExtras();
             Bitmap laminiatura = (Bitmap) extras.get("data");
             this.bitmap = laminiatura;
