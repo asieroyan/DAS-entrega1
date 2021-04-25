@@ -1,6 +1,7 @@
 package com.example.practica1;
 
 import Gestor.ComprobarExiste;
+import Gestor.GestorSesion;
 import Gestor.IniciarSesion;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -111,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
                                 boolean exito = (boolean) json.get("exito");
 
                                 if(exito) {
+                                    GestorSesion.getGestorSesion().setEmail(email);
                                     // El inicio de sesión es correcto, se accede a la actividad Home
                                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                                    intent.putExtra("email", email);
                                     startActivity(intent);
                                     finish();
                                 } else {

@@ -40,6 +40,7 @@ import java.util.Locale;
 
 import Gestor.AnadirAnuncio;
 import Gestor.GestorAnuncios;
+import Gestor.GestorSesion;
 import Gestor.IniciarSesion;
 
 // Actividad que representa la pantalla de añadir un nuevo anuncio y su funcionalidad
@@ -90,7 +91,7 @@ public class AnadirAnuncioActivity extends AppCompatActivity {
                 String titulo = "" + editTextTitulo.getText();
                 String descripcion = "" + editTextDescripcionAnuncio.getText();
                 String contacto = "" + editTextContactoAnuncio.getText();
-                String emailAnunciante = getIntent().getExtras().getString("email");
+                String emailAnunciante = GestorSesion.getGestorSesion().getEmail();
 
                 // encode Bitmap to String
                 Bitmap bitmapAct = AnadirAnuncioActivity.this.bitmap;

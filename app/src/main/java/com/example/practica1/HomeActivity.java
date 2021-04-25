@@ -24,16 +24,19 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import Adaptador.AdaptadorListView;
+import Gestor.EliminarAnuncio;
 import Gestor.GestorAnuncios;
+import Gestor.GestorSesion;
+import Gestor.IniciarSesion;
 import Gestor.Registrarse;
 import Modelo.Anuncio;
 
 public class HomeActivity extends AppCompatActivity {
 
     private boolean datosCargados = false;
-    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +44,21 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         // Obtiene el email del login y lo guarda en la clase
-        email = getIntent().getStringExtra("email");
+        String email = GestorSesion.getGestorSesion().getEmail();
 
         // Obtiene el ListView del Layout
         ListView list = findViewById(R.id.listAnunciosAjenos);
 
-        // LLama al gestor de anuncios para que cargue todos los anuncios de la BD
-        GestorAnuncios.getGestorAnuncios().cargarAnuncios(HomeActivity.this);
+
+
+        // LLama al gestor de anuncios para que cargue todos los anuncios de la BD y obtiene la lista de objetos Anuncio
+        ArrayList<Anuncio> listAnuncios = GestorAnuncios.getGestorAnuncios().cargarAnuncios(HomeActivity.this);
 
         // Obtiene todos los elementos de los anuncios
         String[] titulos = GestorAnuncios.getGestorAnuncios().getTitulos();
         String[] descripciones = GestorAnuncios.getGestorAnuncios().getDescripciones();
         String[] fotosUrl = GestorAnuncios.getGestorAnuncios().getFotosUrl();
         String[] contactos = GestorAnuncios.getGestorAnuncios().getContactos();
-
-        // Obtiene la lista de objetos Anuncio
-        ArrayList<Anuncio> listAnuncios = GestorAnuncios.getGestorAnuncios().getAnuncios();
 
         // Crea un adaptador con esos datos obtenidos y lo enlaza al ListView
         AdaptadorListView arrayAdapter = new AdaptadorListView(this, titulos, descripciones, fotosUrl, contactos);
@@ -82,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Obtiene el anuncio concreto
                 Anuncio anuncio = listAnuncios.get(position);
                 System.out.println(email);
+
                 // Comprobar si el usuario actual es admin o ha creado este anuncio para permitir borrarlo
                 if (email.equals(anuncio.getEmailAnunciante()) || email.equals("as@as.as")) {
 
@@ -89,41 +92,36 @@ public class HomeActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                     builder.setMessage(R.string.textEliminarAnuncio).setPositiveButton(R.string.textSi, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-
+                            System.out.println(anuncio.getCodigo());
+                            // Si se confirma, llamar al gestor de anuncios para eliminar el anuncio actual y relanzar la actividad para actualizar los datos
                             Data data = new Data.Builder().putInt("codigo", anuncio.getCodigo()).build();
-                            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(Registrarse.class).setInputData(data).build();
+                            OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(EliminarAnuncio.class).setInputData(data).build();
 
                             WorkManager.getInstance().getWorkInfoByIdLiveData(otwr.getId())
                                     .observe(HomeActivity.this, new Observer<WorkInfo>() {
                                         @Override
                                         public void onChanged(WorkInfo workInfo) {
-                                            if (workInfo != null && workInfo.getState().isFinished()) {
+                                            if(workInfo != null && workInfo.getState().isFinished()){
                                                 Data outputData = workInfo.getOutputData();
                                                 String resultado = outputData.getString("resultado");
-                                                // Si se confirma, llamar al gestor de anuncios para eliminar el anuncio actual y relanzar la actividad para actualizar los datos
-                                                GestorAnuncios.getGestorAnuncios().eliminarAnuncio(HomeActivity.this, anuncio);
-                                                Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                                /*JSONParser parser = new JSONParser();
+                                                System.out.println(resultado);
+                                                JSONParser parser = new JSONParser();
                                                 try {
                                                     JSONObject json = (JSONObject) parser.parse(resultado);
-                                                    boolean anadido = (boolean) json.get("anadido");
-                                                    if (anadido) {
-                                                        // registrar al usuario
+                                                    boolean existe = (boolean) json.get("existe");
+                                                    if (!existe) {
+                                                        GestorAnuncios.getGestorAnuncios().eliminarAnuncio(HomeActivity.this, anuncio);
+                                                        Intent intent = new Intent(HomeActivity.this, HomeActivity.class);
+                                                        startActivity(intent);
                                                         finish();
-                                                    } else {
-                                                        // Toast de error porque ya existe el usuario
-                                                        Toast.makeText(RegisterActivity.this, R.string.toastErrorBD, Toast.LENGTH_SHORT).show();
                                                     }
                                                 } catch (ParseException e) {
                                                     e.printStackTrace();
-                                                }*/
+                                                }
                                             }
                                         }
                                     });
                             WorkManager.getInstance().enqueue(otwr);
-
                         }
                     }).setNegativeButton(R.string.textNo, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -161,7 +159,6 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.menuAnadirAnuncio:
                 // Llamar a la actividad de añadir anuncio
                 Intent intent1 = new Intent(HomeActivity.this, AnadirAnuncioActivity.class);
-                intent1.putExtra("email", email);
                 startActivity(intent1);
                 finish();
                 return true;
