@@ -87,48 +87,6 @@ public class GestorAnuncios {
     }
 
     public void eliminarAnuncio(Context context, Anuncio anuncio) {
-        /* StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        String direccion = "http://ec2-54-167-31-169.compute-1.amazonaws.com/aoyanguren004/WEB/webservices_eliminarAnuncio.php";
-        HttpURLConnection urlConnection = null;
-        try {
-            int codigo = anuncio.getCodigo();
-            URL destino = new URL(direccion);
-            urlConnection = (HttpURLConnection) destino.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setReadTimeout(3000);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setDoOutput(true);
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
-            String parametros = "codigo="+codigo;
-            out.print(parametros);
-            out.close();
-            int statusCode = urlConnection.getResponseCode();
-            System.out.println(statusCode);
-            if (statusCode == 200) {
-                System.out.print("deletion ok");
-                BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-                String line, result = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
-                }
-                inputStream.close();
-                JSONParser parser = new JSONParser();
-                try {
-                    JSONObject json = (JSONObject) parser.parse(result);
-                    System.out.println(json);
-                    boolean existe = (boolean) json.get("existe");
-                    System.out.println(existe);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }*/
         this.listaAnuncios.remove(anuncio);
     }
 
